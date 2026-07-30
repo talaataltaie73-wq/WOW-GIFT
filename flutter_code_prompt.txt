@@ -1,0 +1,109 @@
+Build the complete Flutter source code for Wow Gift mobile app at C:\Users\HP\Projects\wow-gift\mobile WITHOUT installing Flutter SDK. Do not run `flutter` commands. Only generate files.
+
+REQUIREMENTS:
+
+1. Project Scaffold
+   - Generate pubspec.yaml with project name `wow_gift`, org `com.wowgift`.
+   - Generate lib/main.dart and full folder structure.
+   - Do NOT run flutter create, flutter pub get, or flutter build. Just write files.
+
+2. Dependencies in pubspec.yaml
+   Add these dependencies:
+   - cupertino_icons
+   - http
+   - flutter_bloc
+   - equatable
+   - shared_preferences
+   - flutter_local_notifications
+   - google_maps_flutter
+   - geolocator
+   - flutter_screenutil
+   - cached_network_image
+   - shimmer
+   - smooth_page_indicator
+   - flutter_animate
+   - intl
+   - jwt_decoder
+   - flutter_svg
+   - carousel_slider
+   - dio
+   - flutter_dotenv
+   - image_picker
+   - url_launcher
+   - share_plus
+   - connectivity_plus
+   - pull_to_refresh (or equivalent RefreshIndicator built-in)
+   - lottie (optional for splash)
+   - google_fonts (for Tajawal/Cairo)
+
+3. Design System
+   lib/core/theme/app_colors.dart: primary #0F766E, accent #D4AF37, background #FFFFFF, text #111827, error, success, surfaces.
+   lib/core/theme/app_typography.dart: Tajawal font family with TextTheme.
+   lib/core/theme/app_theme.dart: lightTheme + darkTheme stub, RTL via Directionality.
+
+4. Clean Architecture Folders
+   lib/core/: constants, theme, errors, usecases, network/dio_client.dart, utils, di/service_locator.dart
+   lib/features/: splash, auth, home, product, store, gift_box, occasions, ai_assistant, cart, checkout, profile, orders, search
+   Each feature has data/ (models, repositories, data_sources), domain/ (entities, repository abstracts, usecases), presentation/ (bloc/cubit, pages, widgets).
+
+5. Splash Screen
+   - Use flutter_animate + CustomPainter to draw animated ribbons forming "Wow Gift".
+   - Then show a gift box opening with flowers/chocolates/ribbons.
+   - Show tagline "أهدي بطريقة تُبهر.".
+   - After 4 seconds navigate to HomeScreen.
+
+6. Home Screen (bold-modern style matching chosen comp)
+   - AppBar: Wow Gift logo/name, notification icon.
+   - Search bar with rounded emerald border.
+   - Promo banner carousel with smooth indicator.
+   - Occasion chips horizontal scroll: عيد ميلاد, زواج, خطوبة, تخرج, مولود جديد, عيد الأم, عيد الأب, عيد الحب, النجاح, الشكر, التهنئة, أخرى.
+   - Category grid: عطور, ورود, شوكولاتة, إكسسوارات, ساعات, ملابس, إلكترونيات, ألعاب, كتب, ديكور, مجوهرات, بطاقات هدايا.
+   - Sections: أفضل العروض, المتاجر المميزة, أحدث المنتجات, الأكثر مبيعًا — horizontal lists of product cards.
+   - Product card: image, name, store name, price IQD, rating, discount badge, favorite button.
+   - Bottom nav: الرئيسية, المناسبات, صناديق, السلة, حسابي.
+
+7. Product Detail Screen
+   - Image gallery.
+   - Name, price, discount, rating, store name.
+   - Quantity selector.
+   - Buttons: إضافة إلى صندوق الهدية, المفضلة, مشاركة.
+   - Tap store name → StoreScreen.
+
+8. Store Screen
+   - Store header with cover/logo/name/rating.
+   - Products grid filtered by store.
+
+9. Gift Boxes Screen
+   - Show gift box cards with image, name, price, color, size, description.
+   - Tap → select box → navigate to product selection.
+
+10. Cart / Gift Box Screen
+    - Selected box + products.
+    - Customization: greeting card selection, private message, anonymous toggle, sender name.
+    - Totals in IQD.
+
+11. Checkout / Delivery Screen
+    - Recipient name, phone, address, map picker (Google Maps widget stub), date/time pickers, notes.
+
+12. Profile & Orders Screens
+    - Profile menu: personal info, addresses, payment methods, previous orders, favorites, points, settings, dark mode, support.
+    - Orders list with status chips matching backend enums.
+
+13. Occasions / AI Assistant Screen
+    - Occasion reminder form: name, date, relation, advance notice days.
+    - AI assistant form: occasion, recipient, gender, age, budget, hobbies → show suggestion cards.
+
+14. API Integration
+    - Dio client with base URL http://localhost:8000/api/v1.
+    - JWT interceptor.
+    - Repository implementations call backend endpoints: categories, products, stores, gift-boxes.
+    - If no network/backend, show mock fallback data.
+
+15. RTL & Arabic
+    - Locale ar_IQ, Directionality.rtl.
+    - All UI labels in Arabic.
+
+16. Deliverables
+    Provide complete file list and ensure no placeholder TODOs remain. Every page must compile if Flutter were present. Use only valid Dart syntax.
+
+Do not execute any shell command that requires Flutter. Only write files.

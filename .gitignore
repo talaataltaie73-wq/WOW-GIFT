@@ -1,0 +1,14 @@
+node_modules/
+dist/
+__pycache__/
+.venv/
+venv/
+*.db
+.env
+build/
+.dart_tool/
+.packages
+*.pyc
+.pytest_cache/
+*.egg-info/
+.verdent/

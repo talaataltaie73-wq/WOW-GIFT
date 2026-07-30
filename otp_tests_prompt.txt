@@ -1,0 +1,52 @@
+Follow-up on the Wow Gift Flutter app at C:\Users\HP\Projects\wow-gift\mobile.
+
+An independent browser verification just PASSED these: app renders, no phone prompt before checkout, phone entry appears on the complete-order tap, and the phone step is correctly SKIPPED for an already-verified account.
+
+But it COULD NOT test the OTP screen itself, because Flutter web renders to canvas and driving 6 individual text boxes by pixel coordinates in headless Chrome was unreliable. That gap is what you must close — using the right tool this time, not the browser.
+
+=== PART 1 (main job): prove the OTP screen works, using Flutter's own test tooling ===
+
+Do NOT use Puppeteer for this. Use Flutter widget tests and/or `integration_test`, which drive real widgets and can enter text reliably.
+
+Set up whatever is missing: add `flutter_test` (already present) and `integration_test` to dev_dependencies if needed.
+
+Write tests that cover, against the real `OtpVerificationScreen` and `PhoneEntryScreen` widgets (mock the repository/cubit dependencies as needed, following whatever patterns exist in the repo; if there are no existing tests, establish a clean simple pattern):
+
+1. PhoneEntryScreen: invalid Iraqi number keeps the submit button disabled and shows the Arabic inline error; a valid number enables it. Selecting the WhatsApp pill changes the channel sent to the repository.
+2. OtpVerificationScreen box behaviour: typing a digit auto-advances focus to the next box; backspace on an empty box moves focus back; pasting a 6-digit string fills all six boxes.
+3. Auto-submit: entering the sixth digit triggers verification WITHOUT tapping the confirm button.
+4. Wrong code (repository returns the 400 shape with attempts_remaining): an Arabic error is shown, it mentions the remaining attempts, and the boxes are cleared.
+5. Expired code (410): Arabic "expired" message shown and resend is offered.
+6. Rate limited (429): the wait time is surfaced to the user.
+7. Resend countdown: the resend action is disabled while the countdown is running and becomes enabled after it reaches zero (pump the timer forward with fake async / tester.pump with durations).
+8. Success path: on a successful verify, the screen emits/navigates onward to checkout exactly once — assert the navigation happens automatically and that the user is NOT required to tap complete-order again. This is the assertion the browser run could not make; make it airtight here.
+
+Run the tests with `flutter test` and paste the real output. Fix any genuine bug the tests expose in the app code — fix the app, do not weaken the test to make it pass. If a test reveals the auto-continue-to-checkout wiring is broken, that is a real bug and must be fixed.
+
+=== PART 2: fix the small real defects the verification found ===
+
+a) Missing asset: a 404 on `/assets/assets/icons/whatsapp.png`. Either add a proper WhatsApp icon asset at the correct path and register it in pubspec.yaml, or replace that image reference with a vector/icon that needs no asset. Prefer whichever keeps the design intent. No 404 may remain.
+
+b) The +964 country-code chip position deviates slightly from the approved comp C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-4-phone-entry.png. Read the comp and correct the position/alignment so it matches in RTL.
+
+c) Five backend endpoints return 404 to the app: `/banners`, `/best-sellers`, `/featured`, `/latest`, `/best-deals`. Investigate: determine whether the mobile app is calling paths that do not exist in the backend, or whether the backend is genuinely missing these. Then pick the correct fix and say why:
+   - if the app is calling wrong paths, correct the app to call the real existing endpoints;
+   - if these are genuinely missing product features, implement them in the backend at C:\Users\HP\Projects\wow-gift\backend as thin real endpoints backed by existing Product/GiftBox data (e.g. best sellers by order count, latest by created_at, featured/best-deals by an existing flag or discount), add tests, and keep the whole pytest suite green.
+   Either way, the app's home screen must stop producing 404s.
+
+=== PART 3: rebuild and re-verify it still runs ===
+- `flutter build web` must succeed.
+- Restart the static server on port 8080 (detached, must stay alive) and confirm the backend on 8000 is alive.
+- Take one fresh headless-Chrome screenshot of the home screen into C:\Users\HP\Projects\wow-gift\verdent-design\stage2\screenshots\verify\final_home.png and confirm the console is now free of the 404s from Part 2 (picsum.photos image connection errors are a headless-network artifact and may be ignored).
+- Also paste the browser console list so I can confirm the 404s are gone.
+
+=== REPORT ===
+- Full `flutter test` output, with the count of passing tests.
+- For each of the 8 OTP behaviours above: explicit PASS/FAIL.
+- Explicit statement on whether auto-continue-to-checkout after verification works, and how you proved it.
+- Every bug found and how you fixed it at root cause.
+- What you did about the 5 endpoints and why.
+- `flutter build web` result, the URL, and the final screenshot path.
+- Remaining console errors, if any.
+
+Be honest. If something still does not work, say so plainly.

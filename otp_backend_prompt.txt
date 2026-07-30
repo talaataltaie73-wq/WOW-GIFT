@@ -1,0 +1,82 @@
+Add phone-number verification (OTP) to the Wow Gift FastAPI backend at C:\Users\HP\Projects\wow-gift\backend.
+
+Another task is concurrently editing C:\Users\HP\Projects\wow-gift\mobile — do NOT touch the mobile folder or the admin-dashboard folder. Backend only.
+
+=== BUSINESS INTENT ===
+The customer must verify a real phone number before an order can be finalised, to block fake orders and fake phone lines, and to guarantee the courier can reach the customer. Verification happens ONLY at checkout, never at app launch.
+
+=== DECISIONS ALREADY MADE (implement exactly, do not redesign) ===
+1. Provider is abstract now, real provider added later. Build a provider interface supporting BOTH SMS and WhatsApp.
+2. The verified phone belongs to the USER ACCOUNT (verify once per number). The ORDER's recipient phone is a separate, unverified field that already exists — do not add verification to it.
+3. Re-verification is required only when the user changes their phone number.
+4. OTP is 6 numeric digits.
+
+=== EXACT API CONTRACT (the mobile app is being built against this right now — do not deviate) ===
+
+POST /api/v1/auth/phone/request-otp
+  body: { "phone": "+9647XXXXXXXX", "channel": "sms" | "whatsapp" }
+  200:  { "request_id": "<uuid>", "phone": "+9647XXXXXXXX", "channel": "sms",
+           "expires_in_seconds": 300, "resend_after_seconds": 60, "dev_code": "123456" | null }
+  dev_code is returned ONLY when settings.OTP_DEV_MODE is true. In production it must be null.
+  429 when rate limited, body: { "detail": "...", "retry_after_seconds": N }
+
+POST /api/v1/auth/phone/verify-otp
+  body: { "request_id": "<uuid>", "code": "123456" }
+  200:  { "verified": true, "phone": "+9647XXXXXXXX", "phone_verified_at": "<iso8601>" }
+  400 invalid code, body: { "detail": "...", "attempts_remaining": N }
+  410 expired request
+
+GET /api/v1/users/me
+  must now also return: "phone", "phone_verified" (bool), "phone_verified_at" (iso8601 | null)
+
+POST /api/v1/orders/
+  If the authenticated user's phone_verified is false, reject with 403 and body:
+  { "detail": "phone_not_verified", "code": "PHONE_NOT_VERIFIED" }
+  This is the checkout gate.
+
+Both /auth/phone/* endpoints require an authenticated customer (JWT).
+
+=== IMPLEMENTATION ===
+
+Provider layer — app/services/otp/
+- `base.py`: abstract `OtpProvider` with `async def send(phone: str, code: str, channel: str) -> None`.
+- `mock_provider.py`: logs the code via the logger and stores it so dev_code can be returned. Default provider.
+- `twilio_provider.py`: real implementation skeleton for BOTH Twilio SMS and Twilio WhatsApp, reading TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN / TWILIO_SMS_FROM / TWILIO_WHATSAPP_FROM from settings. It must be fully written and importable, but it is fine that it raises a clear configuration error if credentials are absent. Do NOT add the twilio SDK as a hard dependency — import it lazily inside the send method so the app runs without it installed.
+- `factory.py`: returns the provider based on settings.OTP_PROVIDER ("mock" | "twilio"). Adding a future provider must require only a new file plus one factory line.
+
+Model — app/models/phone_verification.py
+`PhoneVerification`: id (uuid), user_id (FK), phone, channel, code_hash, attempts, max_attempts, expires_at, consumed_at, created_at, ip (nullable).
+- NEVER store the raw code. Hash it with the existing bcrypt/passlib helper in app/core/security.py.
+User model: add `phone_verified` (bool, default False) and `phone_verified_at` (datetime, nullable). `phone` already exists — reuse it, do not duplicate.
+
+Security rules (all configurable in app/core/config.py)
+- OTP_LENGTH = 6
+- OTP_TTL_SECONDS = 300
+- OTP_MAX_ATTEMPTS = 5  (after this the request is dead, user must request a new code)
+- OTP_RESEND_COOLDOWN_SECONDS = 60
+- OTP_MAX_REQUESTS_PER_PHONE_PER_HOUR = 5
+- OTP_DEV_MODE = True in dev (returns dev_code), documented as MUST be False in production
+- OTP_PROVIDER = "mock"
+- Generate the code with `secrets`, never `random`.
+- Verifying a code must invalidate it (set consumed_at) so it cannot be replayed.
+- Requesting a new code for the same phone must invalidate previous outstanding requests.
+- Normalise/validate the phone to E.164. Iraq default country code +964. Reject clearly malformed numbers with 422.
+- If the submitted phone differs from the user's current stored phone, verification success updates the user's phone AND sets phone_verified=True.
+
+Service — app/services/otp_service.py holding all the logic. Keep routers thin.
+Router — extend app/routers/auth.py (or a new app/routers/phone.py mounted under /auth/phone).
+
+Alembic: generate a migration for the new table and the two new User columns.
+
+Update .env.example and README with every new setting, the two endpoints, and an explicit note that OTP_DEV_MODE must be False in production and that a real provider must be configured before launch.
+
+=== TESTS (add to the existing pytest suite) ===
+Cover: happy path request+verify; wrong code decrements attempts and returns attempts_remaining; exceeding max attempts is rejected; expired code returns 410; resend cooldown returns 429; per-hour rate limit returns 429; code cannot be reused after success; order creation returns 403 PHONE_NOT_VERIFIED when unverified and succeeds once verified; /users/me exposes phone_verified; dev_code is absent when OTP_DEV_MODE is False; whatsapp channel is accepted; invalid phone format returns 422; raw code is never persisted (assert the stored value differs from the code).
+
+=== VERIFICATION (paste real output) ===
+- Run the FULL suite: `pytest tests/ -v`. All previous tests must still pass plus the new ones. Paste exact counts.
+- Boot the server with uvicorn, then with a real HTTP client: register a customer, request an OTP, read dev_code from the response, verify it, then create an order successfully. Paste every request and response body.
+- Also paste the response proving order creation is blocked with 403 PHONE_NOT_VERIFIED before verification.
+- Confirm via grep that the raw code is not stored anywhere.
+
+Do not claim success without pasted command and HTTP output.

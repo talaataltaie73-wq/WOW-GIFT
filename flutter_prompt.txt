@@ -1,0 +1,117 @@
+Install Flutter SDK on Windows at C:\Users\HP\dev\flutter, then build the Wow Gift Flutter app at C:\Users\HP\Projects\wow-gift\mobile following the chosen bold-modern design comp at C:\Users\HP\Projects\wow-gift\design\stage2\chosen-home-comp.png.
+
+REQUIREMENTS:
+
+1. Flutter Installation & Setup
+   - Download the latest stable Flutter SDK for Windows and extract to C:\Users\HP\dev\flutter.
+   - Add flutter\bin to PATH.
+   - Run `flutter doctor` and report the output honestly. Fix any issues you can (accept Android SDK warnings if no Android Studio; we will verify on web).
+   - Create the Flutter project with `flutter create --project-name wow_gift --org com.wowgift mobile` at C:\Users\HP\Projects\wow-gift.
+
+2. Dependencies
+   Add to pubspec.yaml:
+   - http for REST API calls
+   - flutter_bloc or provider for state management (choose one, justify briefly)
+   - shared_preferences for local storage
+   - flutter_local_notifications for local notifications
+   - google_maps_flutter for maps
+   - geolocator for location
+   - flutter_screenutil or equivalent for responsive sizing
+   - cached_network_image
+   - shimmer for loading skeletons
+   - smooth_page_indicator for banners
+   - flutter_animate or animations for transitions
+   - intl for formatting and RTL
+   - jwt_decoder for token inspection
+   - flutter_svg
+   - carousel_slider
+   - dio (optional but recommended)
+
+3. Design System
+   Create lib/core/theme/ with:
+   - AppColors: primary #0F766E, accent #D4AF37, background #FFFFFF, text #111827, error, success, surface variants.
+   - AppTypography: Arabic-friendly font (use Google Fonts Tajawal or Cairo) with headline, title, body, caption, button styles.
+   - AppTheme: lightTheme with proper RTL Directionality, rounded corners (12-24), elevated cards, emerald buttons with white text, gold accents.
+   - darkTheme stub ready for future dark mode.
+
+4. Architecture
+   Use Clean Architecture folders:
+   - lib/core/: constants, theme, errors, usecases, network, utils, di/service_locator.dart
+   - lib/features/: auth, home, product, store, gift_box, occasions, ai_assistant, cart, checkout, profile, orders
+   - lib/data/: models, repositories, data_sources
+   - lib/domain/: entities, repositories (abstract), usecases
+   - lib/presentation/: pages, widgets, blocs/cubits
+
+5. Splash Screen
+   - Create a visually rich splash screen. Show animated ribbons that form the words "Wow Gift", then a gift box opens releasing ribbons/flowers/chocolates, then the tagline "أهدي بطريقة تُبهر.".
+   - Use CustomPainter or Lottie if you can add lottie dependency. At minimum use flutter_animate.
+   - After animation navigate to HomeScreen (skip onboarding for now).
+
+6. Home Screen (must match chosen comp style)
+   - AppBar with Wow Gift logo/name (gold text on emerald or white).
+   - Search bar with rounded emerald border.
+   - Animated promo banner carousel with smooth indicator.
+   - Horizontal occasion chips: عيد ميلاد, زواج, خطوبة, تخرج, مولود جديد, عيد الأم, عيد الأب, عيد الحب, النجاح, الشكر, التهنئة, أخرى.
+   - Category grid: عطور, ورود, شوكولاتة, إكسسوارات, ساعات, ملابس, إلكترونيات, ألعاب, كتب, ديكور, مجوهرات, بطاقات هدايا.
+   - Sections: أفضل العروض, المتاجر المميزة, أحدث المنتجات, الأكثر مبيعًا — each as horizontal scroll of product cards.
+   - Product card: image, name, store name, price in IQD, rating stars, discount badge if any, favorite button.
+   - Bottom navigation: الرئيسية, المناسبات, صناديق, السلة, حسابي.
+   - Pull-to-refresh and loading shimmer.
+
+7. Product Detail Screen
+   - Image gallery with indicator.
+   - Name, price, discount, rating, store name, quantity selector.
+   - Buttons: إضافة إلى صندوق الهدية, المفضلة, مشاركة.
+   - Tapping store name navigates to StoreScreen.
+
+8. Store Screen
+   - Store header with cover, logo, name, rating.
+   - Products grid filtered by store.
+
+9. Gift Boxes Screen
+   - Show 2 gift box cards with image, name, price, color, size, description.
+   - Tap selects box and navigates to product selection / cart.
+
+10. Cart / Gift Box Screen
+    - Show selected box + products inside.
+    - Allow customization: greeting card selection, private message, anonymous toggle, sender name.
+    - Show totals in IQD.
+
+11. Checkout / Delivery Screen
+    - Recipient name, phone, address, map picker (Google Maps), delivery date/time pickers, notes.
+
+12. Profile & Orders (stubs)
+    - Profile menu list.
+    - Orders list with status chip.
+
+13. AI Assistant Screen
+    - Form fields: المناسبة, لمن الهدية, ذكر/أنثى, العمر, الميزانية, الهوايات.
+    - Show dummy suggestions with product cards.
+
+14. API Integration
+    - Connect to the running backend at http://localhost:8000/api/v1 for categories, products, stores, gift-boxes.
+    - Provide a Dio/HTTP client with interceptors for JWT, logging, and error handling.
+    - Use mock fallback data if backend is unreachable so the UI never crashes.
+
+15. RTL & Arabic
+    - Set locale to ar_IQ.
+    - Use Directionality(textDirection: TextDirection.rtl) at app root.
+    - All labels in Arabic.
+
+16. Verification
+    - Run `flutter pub get` successfully.
+    - Run `flutter build web` to ensure the app compiles (no device needed).
+    - Provide the exact flutter doctor output.
+    - Provide the exact flutter build web output (success or failure with last error).
+    - If build fails, fix the first error and retry once.
+
+ACCEPTANCE CRITERIA:
+- Flutter SDK is installed and on PATH.
+- `flutter doctor` output is reported.
+- `flutter build web` succeeds and produces web build.
+- Home screen visually follows the bold-modern comp: emerald primary, gold accent, white background, rounded cards, RTL Arabic, bottom nav, promo banner, occasion chips, product sections.
+- Splash screen has animation.
+- Product detail, store, gift boxes, checkout, profile, orders, AI assistant screens exist as navigable stubs or complete pages.
+- App connects to backend or falls back to mock data.
+
+Do not claim success without pasted command output evidence.

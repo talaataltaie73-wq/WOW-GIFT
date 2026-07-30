@@ -1,0 +1,50 @@
+Independent verification of the Wow Gift admin dashboard at C:\Users\HP\Projects\wow-gift\admin-dashboard.
+
+You did NOT build this. Verify it rigorously and fix anything that fails. Report honestly with pasted command output.
+
+APPROVED DESIGN COMPS (read these images and compare against the actual rendered pages):
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-1-admin-overview.png
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-2-store-approvals.png
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-3-reports.png
+
+VERIFY:
+
+1. Clean build
+   - Delete node_modules and package-lock.json, run a fresh npm install, then npm run build.
+   - Paste exact output. Report the real pass/fail.
+
+2. Runtime rendering (this is the critical gap — the build passing does not prove pages render)
+   - Start the dev server.
+   - Use a headless browser (install playwright if needed) to visit EVERY route: /login and all 11 dashboard routes.
+   - For each route: capture console errors and confirm the page renders meaningful content (not a blank screen or error boundary).
+   - Paste a per-route table: route, HTTP/render status, console error count.
+   - Take a screenshot of Overview, Store Approvals, and Reports at 1440px width and save them to C:\Users\HP\Projects\wow-gift\verdent-design\stage2\screenshots\.
+
+3. Design fidelity
+   - Compare your screenshots against the three approved comps.
+   - Confirm: sidebar is on the RIGHT, emerald #0F766E sidebar, gold #D4AF37 accents, white background, 14px card radius, Cairo Arabic font, RTL text direction.
+   - Report any visible deviation from the comps.
+
+4. Functional checks
+   - Confirm mock fallback works: with the backend NOT running, every page still shows data.
+   - Confirm the admin role guard blocks a non-admin role (simulate by setting a merchant role in localStorage) and shows an unauthorized page.
+   - Confirm currency displays as IQD / د.ع everywhere. Grep for SAR and ر.س — there must be zero matches.
+   - Confirm order status filters use the exact backend enums: pending_approval, accepted, preparing, out_for_delivery, delivered, cancelled.
+
+5. Consistency
+   - Confirm the admin dashboard does not use the same localStorage keys as the merchant dashboard (must be admin_token / admin_user).
+   - Confirm the merchant dashboard at C:\Users\HP\Projects\wow-gift\merchant-dashboard was NOT modified (git status or file timestamps).
+
+6. Responsive
+   - Verify the layout at 1440px, 1024px, and 768px. Report whether the sidebar collapses or breaks. Fix if it breaks badly.
+
+FIX ANY FAILURE you find, then re-verify.
+
+ACCEPTANCE CRITERIA:
+- Fresh clean install + build passes, with pasted output.
+- All 12 routes render with zero console errors, proven by a per-route table.
+- Three screenshots saved and compared to comps, deviations reported.
+- Mock fallback, role guard, IQD currency, and status enums all confirmed.
+- Responsive behaviour reported at three widths.
+
+Do not claim success without pasted evidence. If something cannot be verified, say so explicitly instead of assuming it works.

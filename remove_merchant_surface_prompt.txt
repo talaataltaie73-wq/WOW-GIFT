@@ -1,0 +1,69 @@
+Restrict the Wow Gift product to exactly TWO surfaces: (1) the end-customer mobile app, and (2) the comprehensive admin dashboard. Remove the merchant dashboard surface completely.
+
+PROJECT ROOT: C:\Users\HP\Projects\wow-gift
+
+CURRENT STATE:
+- backend\            FastAPI backend (keep, but audit)
+- mobile\             Flutter customer app (keep, audit for merchant leakage)
+- merchant-dashboard\ Merchant web dashboard (DELETE THIS ENTIRE SURFACE)
+- admin-dashboard\    Admin web dashboard (keep — another task is verifying it right now, DO NOT modify or read it)
+
+CRITICAL CONSTRAINT: Do NOT touch C:\Users\HP\Projects\wow-gift\admin-dashboard. Another task is actively verifying it. Any edit there will corrupt that verification.
+
+=== STEP 1: SAFETY SNAPSHOT (do this FIRST, before any deletion) ===
+Deletion must be recoverable.
+- If the project is not already a git repo, run `git init` at C:\Users\HP\Projects\wow-gift, add a sensible .gitignore (node_modules, dist, __pycache__, .venv, venv, *.db, .env, build, .dart_tool), then `git add -A` and `git commit -m "snapshot before merchant dashboard removal"`.
+- If it IS already a git repo, commit all current work first with the same message.
+- Paste the exact git output proving the commit succeeded and that merchant-dashboard files are in that commit.
+- Only after the commit is confirmed may you proceed to deletion.
+
+=== STEP 2: DELETE THE MERCHANT DASHBOARD ===
+- Delete the entire directory C:\Users\HP\Projects\wow-gift\merchant-dashboard.
+- Delete C:\Users\HP\Projects\wow-gift\merchant_dashboard_prompt.txt.
+- Confirm with a directory listing that it is gone.
+
+=== STEP 3: AUDIT AND CLEAN THE MOBILE APP (customer-only) ===
+Read C:\Users\HP\Projects\wow-gift\mobile thoroughly.
+The mobile app must be strictly END-CUSTOMER only. Its allowed scope:
+  browse gifts -> build/prepare the gift (gift box + products + customization) -> checkout -> delivery details -> payment -> track order -> profile/orders/favorites/reminders/AI assistant.
+Remove anything that lets a user act as a merchant or admin:
+- Any merchant registration option, "register as merchant / store owner" toggle, merchant role selection in signup, merchant login path.
+- Any merchant-only or admin-only screens, routes, widgets, cubits, repositories, models, or nav entries.
+- Any role-switching UI.
+Keep read-only STORE BROWSING (viewing a store page, store name on a product) — that is legitimate customer functionality and must stay.
+Report exactly what you found and what you removed. If the mobile app was already customer-only, say so explicitly and clearly rather than inventing changes.
+
+=== STEP 4: AUDIT THE BACKEND ===
+Read C:\Users\HP\Projects\wow-gift\backend.
+Guiding principle: merchants still EXIST as data (stores sell products, admin approves stores, 10% commission is calculated, earnings are reported to admin). What must go is the merchant-facing SELF-SERVICE surface, because there is no longer a merchant dashboard.
+
+Do this:
+- Keep all models: Merchant, Store, Product, MerchantPayout, etc. Admin needs them.
+- Keep all admin-accessible endpoints, including merchant/store/earnings data needed by the admin dashboard and its reports.
+- Remove or restrict merchant SELF-SERVICE endpoints so they are admin-only instead of merchant-role-accessible. Specifically re-guard endpoints like /merchants/me, /merchants/me/earnings, merchant-scoped product create/update/delete, and merchant order-status mutation so they require the admin role.
+- Remove the ability to REGISTER with role "merchant" through the public auth endpoint. Merchant records should only be creatable by an admin.
+- Keep the "merchant" role value in the enum/data model (existing rows and admin management depend on it) but it must no longer be self-registerable or grant dashboard-style access.
+- Update the require_merchant dependency usage accordingly — either delete it if fully unused, or keep it only where an admin also satisfies it.
+
+Update the backend README to reflect the new two-surface architecture.
+
+=== STEP 5: UPDATE PROJECT DOCS ===
+- Update C:\Users\HP\Projects\wow-gift\PRODUCT_SPEC.md: remove the "Merchant Dashboard (web)" section, and state clearly that the product has exactly two surfaces (customer mobile app + admin dashboard) and that merchant management happens only inside the admin dashboard.
+- Keep the merchant TERMS content (10% commission, Sunday payout, 50,000 IQD minimum, merchant responsibilities) — these are still business rules the admin enforces. Note in the spec that these are administered via the admin dashboard.
+
+=== STEP 6: VERIFY ===
+- Run the backend test suite. Paste exact output. Fix any test that broke because of your changes (for example a test that registers a merchant, or a test that used a merchant-guarded endpoint). Tests must pass.
+- Grep the whole repo (excluding admin-dashboard and node_modules and .git) for: "merchant-dashboard", "merchant dashboard", "لوحة التاجر", "require_merchant". Report every remaining hit and justify why each one is legitimate or remove it.
+- Confirm the final top-level directory listing shows only: backend, mobile, admin-dashboard, design, verdent-design, plus docs/config files.
+
+ACCEPTANCE CRITERIA:
+- A git commit exists that still contains the merchant dashboard, proven by pasted git output, BEFORE deletion.
+- merchant-dashboard directory no longer exists.
+- admin-dashboard directory is byte-for-byte untouched.
+- Mobile app has no merchant/admin capability; store browsing still works.
+- Public registration can no longer create a merchant account.
+- Merchant self-service endpoints are now admin-guarded.
+- Backend tests pass, with pasted output.
+- PRODUCT_SPEC.md describes exactly two surfaces.
+
+Report honestly. If you cannot do something, say so instead of claiming success.

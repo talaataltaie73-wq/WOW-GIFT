@@ -1,0 +1,51 @@
+The Wow Gift customer app is running at http://127.0.0.1:8080 (Flutter web build served from C:\Users\HP\Projects\wow-gift\mobile\build\web, backend on http://127.0.0.1:8000).
+
+The user opened it and reported these real defects, in their words:
+1. Tapping icons does nothing.
+2. Tapping "المناسبات" (occasions) does nothing / shows nothing.
+3. Payment methods do not appear.
+4. Tapping the search bar does nothing — it does not focus and no keyboard appears.
+
+Your job: find the ACTUAL cause of each and make every interactive element in the app genuinely work. Mobile app only — do NOT touch the backend or admin-dashboard folders (another task is editing the backend right now).
+
+=== IMPORTANT DIAGNOSTIC CONTEXT — read before assuming ===
+A previous automated run DID successfully tap the bottom navigation, open a product, add to cart and tap checkout. So pointer input is not globally dead. That means these are most likely a MIX of separate problems, not one. Do not stop after finding one cause.
+
+Likely categories to check, in order:
+
+A) Dead handlers — decorative widgets with no `onTap` at all, or `onTap: () {}`, or a `GestureDetector`/`InkWell` that was never wired. Very likely for the icons.
+   Audit EVERY tappable-looking element in the app: home quick-action icons, category tiles, occasion chips, banner/carousel items, product cards, profile menu rows, bottom nav items, app-bar actions, "see all" links. Build a list, and for each state whether it currently has a working handler.
+
+B) Search bar — check whether the `TextField` is `readOnly: true`, `enabled: false`, wrapped in `IgnorePointer`, or has no `onTap` that navigates to the search screen. Decide the correct behaviour: EITHER it focuses and accepts typing in place with live results, OR it is a tap target that navigates to a real search screen. Pick one, implement it fully, and make sure a keyboard/caret actually appears when it should. Note that on Flutter web a `readOnly` field will never raise a keyboard — if the design intent is in-place typing, `readOnly` must go.
+
+C) Occasions — determine whether the screen/route is missing, the route is registered but renders an empty state, the data source returns nothing, or the tap target is dead. Fix the real cause so the occasions screen shows real content.
+
+D) Payment methods — the backend defines this enum: cash_on_delivery, zain_cash, asia_hawala, mastercard, visa, e_wallet. Find where the checkout payment step should render them and make all six appear as selectable options with Arabic labels, the selection persisting into the order payload. If the list is driven by an API call that returns nothing, render the known enum locally instead of an empty list.
+
+E) Also check the Flutter web shell: read `web/index.html`. If there is a loading/splash overlay div that is never removed, or any absolutely-positioned element above the Flutter canvas, it can silently swallow pointer and focus events. Verify and fix if present.
+
+=== ALSO: routes ===
+Check `lib/app_router.dart` against every navigation call in the app. Any `Navigator.pushNamed` to a route that is not registered fails silently and looks exactly like "the button does nothing". List any such mismatches and fix them.
+
+=== RULES ===
+- Fix root causes. Do not delete or hide broken UI to make the symptom disappear. Every screen and control must end up functional.
+- All user-visible text in Arabic. Keep RTL correct.
+- Reuse existing theme tokens in AppColors and existing shared widgets.
+- Do not regress the phone-verification flow: it must still trigger ONLY on the complete-order tap in `cart_screen.dart::_buildCheckoutButton`, and still be skipped for an already-verified account. The existing tests in `test/phone_verification_test.dart` must still pass.
+
+=== VERIFY YOUR OWN WORK ===
+1. `flutter analyze` — no new errors.
+2. `flutter test` — all existing tests still pass; add widget tests for the search bar behaviour and the payment-method selector.
+3. `flutter build web` must succeed. Restart the static server on port 8080 detached so it stays alive.
+4. Then actually drive the running app in headless Chrome and PROVE each of the four complaints is fixed. Remember Flutter renders to canvas: interact by coordinates, and verify by taking a screenshot and reading it. Save screenshots to C:\Users\HP\Projects\wow-gift\verdent-design\stage2\screenshots\interaction\
+   Required proof screenshots: an icon tap producing a visible result; the occasions screen with content; the checkout payment step showing all six methods; the search bar focused with a caret or with typed text visible.
+   For the search bar specifically, if canvas text entry is unreliable in headless Chrome, prove it with a widget test instead and say so explicitly.
+
+=== REPORT ===
+- A table of every interactive element you audited: was it broken, what was the cause, what you did.
+- Explicit root cause for each of the four user complaints.
+- Any route mismatches found.
+- Whether `web/index.html` had a pointer-blocking overlay.
+- `flutter analyze` / `flutter test` / `flutter build web` output.
+- All screenshot paths.
+- Anything still not working — say so plainly rather than glossing over it.

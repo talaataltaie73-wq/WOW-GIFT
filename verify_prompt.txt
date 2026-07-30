@@ -1,0 +1,28 @@
+Independent verification and fix task for the Wow Gift FastAPI backend at C:\Users\HP\Projects\wow-gift\backend.
+
+PART A — FIX (required):
+1. The default currency is currently SAR. This is WRONG. The product targets Iraq. Change the default currency to IQD (Iraqi Dinar) everywhere: app/core/config.py, models, schemas, seed.py, README, .env.example.
+2. Merchant payout rules must be encoded as configurable constants: commission rate 10.0% of each successful sale, calculated on order delivery completion; weekly payout every Sunday; minimum payout threshold 50,000 IQD. Add these to app/core/config.py as settings and reference them where relevant.
+3. Add a MerchantPayout model + earnings calculation so merchant earnings = order total minus 10% commission, only counted for orders with status "delivered". Expose a merchant earnings endpoint.
+4. Add the missing payment methods enum to match requirements exactly: cash_on_delivery, zain_cash, asia_hawala, mastercard, visa, e_wallet. Ensure Order supports coupon and reward points.
+5. Ensure order status enum exactly matches: pending_approval, accepted, preparing, out_for_delivery, delivered, cancelled.
+6. Add gift customization fields to Order: greeting_card_id, private_message, is_anonymous, sender_display_name.
+7. Add delivery fields to Order: recipient_name, recipient_phone, address, latitude, longitude, delivery_date, delivery_time, notes.
+
+PART B — VERIFY (required, report honestly):
+1. Run the full test suite and report exact pass/fail counts.
+2. Start the server with uvicorn and confirm /docs and /health respond. Report the actual HTTP status codes.
+3. Run seed.py and confirm data is inserted; then query GET /api/v1/categories, /api/v1/products, /api/v1/gift-boxes and confirm non-empty responses. Paste the actual JSON responses as evidence.
+4. Verify Alembic can generate a migration without errors.
+5. Add tests covering: order creation end-to-end, merchant earnings calculation with 10% commission, coupon application, and each order status transition.
+6. Confirm every one of the 13 routers is actually reachable (list the route table from the running app).
+
+ACCEPTANCE CRITERIA:
+- Currency is IQD everywhere, no SAR remains anywhere in the codebase.
+- All enums match the specified values exactly.
+- Order model has all gift customization and delivery fields.
+- Merchant earnings endpoint returns correct 10% commission math, proven by a test.
+- All tests pass; report the real number.
+- Server boots and seeded endpoints return real data, proven by pasted JSON.
+
+Be rigorous and do not claim success without pasted command output as evidence.

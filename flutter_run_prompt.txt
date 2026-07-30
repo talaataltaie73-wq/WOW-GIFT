@@ -1,0 +1,67 @@
+Goal: get the Wow Gift Flutter customer app at C:\Users\HP\Projects\wow-gift\mobile ACTUALLY RUNNING in a web browser so the user can open it and click through it. This is a Windows machine, cmd shell.
+
+CRITICAL CONTEXT — read this before you start:
+This codebase has NEVER been compiled. Not once. ~69 Dart files were written by code-generation without any compiler ever checking them, including a brand-new `lib/features/phone_verification/` module added minutes ago. Expect a LOT of real compile errors: type mismatches, missing imports, wrong constructor params, API drift between layers, missing pubspec dependencies, null-safety violations. This is expected and is the core of your job. Do not be discouraged by a wall of errors on the first run.
+
+Your job is not "try to compile". Your job is: it must actually run and render.
+
+=== STEP 1: Flutter SDK ===
+Check first whether Flutter already exists: `flutter --version` and `where flutter`. If it exists and is >= 3.19, skip installation.
+
+If not installed, install it. Prefer, in order of preference:
+1. `git clone https://github.com/flutter/flutter.git -b stable C:\src\flutter` then add `C:\src\flutter\bin` to PATH for the current shell session via `set PATH=C:\src\flutter\bin;%PATH%`.
+2. If git clone is too slow or fails, download the stable Windows zip from the official Flutter site and extract to C:\src\flutter.
+
+Do NOT attempt to install Android Studio, Visual Studio, or the Android SDK. We only need the WEB target. Warnings from `flutter doctor` about missing Android/Windows toolchains are fine and expected — ignore them. Confirm `flutter doctor` shows Chrome or at least that the web target is available: `flutter devices` and `flutter config --list`.
+If needed: `flutter config --enable-web`.
+
+Note: the very first flutter command downloads the Dart SDK and takes several minutes. Be patient, use a generous timeout (600000 ms), do not kill it.
+
+=== STEP 2: Dependencies ===
+cd to C:\Users\HP\Projects\wow-gift\mobile and run `flutter pub get`.
+Read `pubspec.yaml` first. If any package version is incompatible with the installed Dart SDK, fix the constraint to a compatible published version. If a package used in code is missing from pubspec entirely, add it. Re-run until `pub get` succeeds cleanly.
+
+=== STEP 3: Make it compile ===
+Run `flutter analyze` to get the full error list, then `flutter build web` for real compile errors.
+
+Fix EVERY error until the build succeeds. Guidance:
+- Fix the root cause. Do NOT comment out screens, delete features, stub methods to return null, or wrap things in try/catch to silence errors. Every screen must remain functional.
+- If two layers disagree on a type or field name, decide which is correct and align the other to it.
+- Missing Google Maps API key is known and expected — those are placeholder containers, keep them as placeholders; they must not break the build.
+- Info-level and warning-level lints from `flutter analyze` can be left alone. Only errors must be fixed.
+- Work iteratively: build, read errors, fix a batch, rebuild. Keep going.
+
+=== STEP 4: Run it and prove it renders ===
+Start the backend first so the app has real data:
+  cd C:\Users\HP\Projects\wow-gift\backend
+  start the FastAPI server (uvicorn) in the background on its usual port
+Confirm it responds before moving on.
+
+Check what base URL the mobile app points at (look in `lib/core/constants/app_constants.dart` and the Dio client). If it points at a host the browser cannot reach, point it at the local backend so the running web app can actually talk to it. Note that Flutter web will hit CORS — if the backend blocks the web origin, add the dev origin to the backend's CORS allowed origins. That is an acceptable dev-only change.
+
+Then serve the app:
+  flutter run -d web-server --web-port=8080 --web-hostname=127.0.0.1
+(or `flutter build web` + a static server on 8080 if `run` is awkward to background)
+
+The server must stay alive after your task ends — launch it detached/background so the user can open it.
+
+Now PROVE it renders. A blank white page is a failure, not a success. Puppeteer is already installed on this machine and was used to verify the admin dashboard. Use headless Chrome to:
+- navigate to http://127.0.0.1:8080
+- wait for the Flutter canvas/app to finish bootstrapping (Flutter web takes a few seconds and renders into canvas — wait for the loading indicator to disappear and for non-blank pixels)
+- capture all browser console errors
+- take a screenshot into C:\Users\HP\Projects\wow-gift\verdent-design\stage2\screenshots\mobile-web-home.png
+- fix any runtime error that prevents the first screen from rendering, then re-verify
+
+Note: Flutter web renders to canvas, so DOM-based assertions mostly will not work. Rely on screenshots and console errors.
+
+=== REPORT ===
+- Paste the exact `flutter --version` output.
+- Paste the final successful `flutter build web` output tail.
+- State the exact URL the user should open.
+- Confirm the server is running detached and will stay up.
+- Paste the browser console output (or state it was clean).
+- Attach the screenshot path and describe what is actually visible on screen.
+- List every file you modified to make it compile, with a one-line reason each.
+- State honestly how many compile errors you fixed.
+
+Do NOT claim success without a screenshot showing the app's home screen actually rendered.

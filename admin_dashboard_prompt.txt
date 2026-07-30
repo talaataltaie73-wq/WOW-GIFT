@@ -1,0 +1,84 @@
+build the admin dashboard now
+
+---
+
+TARGET: C:\Users\HP\Projects\wow-gift\admin-dashboard
+
+This is the PLATFORM ADMIN dashboard for the Wow Gift gift-giving marketplace. It is a separate web project from the already-completed merchant dashboard at C:\Users\HP\Projects\wow-gift\merchant-dashboard.
+
+APPROVED DESIGN COMPS — you MUST view these images and restore them faithfully:
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-1-admin-overview.png
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-2-store-approvals.png
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-3-reports.png
+
+Read all three images before writing code. Match layout structure, spacing rhythm, card treatment, chart styling, table design, and badge colors.
+
+REFERENCE IMPLEMENTATION:
+Reuse the conventions already established in C:\Users\HP\Projects\wow-gift\merchant-dashboard — same stack, same UI component patterns, same api/mock-fallback approach. Read its src/ first so the two dashboards stay consistent. Do NOT modify the merchant dashboard.
+
+TECH STACK (must match merchant dashboard):
+- Vite + React + TypeScript + Tailwind CSS v4
+- React Query for server state
+- React Router v6
+- Zustand for auth state
+- Recharts for charts
+- Axios with JWT interceptor
+- Node.js 20.19.2 is installed at C:\nodejs\node.exe — use it if the default node is older
+
+DESIGN SYSTEM (locked, do not deviate):
+- Primary emerald #0F766E
+- Accent gold #D4AF37
+- Background white #FFFFFF
+- Text charcoal #111827
+- Status colors: amber pending, emerald approved/success, red rejected/error, blue info
+- RTL Arabic layout, dir="rtl", sidebar on the RIGHT side
+- Cairo font
+- Rounded cards 14px, soft subtle shadows, generous whitespace
+
+LAYOUT:
+- Right-side emerald sidebar with gold "Wow Gift" wordmark at top
+- Nav items with Arabic labels; active item has a gold edge indicator
+- Top bar with admin name, notifications bell, logout
+
+REQUIRED PAGES (11 destinations + login):
+
+1. تسجيل الدخول (Login) — admin login, JWT, mock fallback
+2. نظرة عامة (Overview) — 4 KPI stat cards (إجمالي المستخدمين، المتاجر النشطة، إجمالي الطلبات، إيرادات المنصة بالدينار العراقي) with emerald icons and gold trend arrows; wide monthly-orders area chart with emerald gradient fill; order-status donut chart; bottom table of pending store approvals
+3. المستخدمون (Users) — table of users with search, role filter (customer/merchant/admin), status toggle (active/blocked), view detail drawer
+4. المتاجر (Stores) — all stores with logo thumb, merchant, rating, product count, status badge, activate/suspend actions
+5. موافقات المتاجر (Store Approvals) — matches comp 2 exactly: filter chips (الكل، قيد الانتظار، مقبول، مرفوض) with gold outline on active; table with logo, store name, merchant name, phone, registration date, status badge; emerald Approve + outlined red Reject buttons per row; expandable detail drawer showing store documents, 10% commission rate, and merchant terms acceptance checkmarks in gold; pagination
+6. المنتجات (Products) — all platform products across stores, search, category filter, store filter, approve/hide actions, stock badge
+7. الطلبات (Orders) — all orders, filter by status using the exact backend enums (pending_approval, accepted, preparing, out_for_delivery, delivered, cancelled) with Arabic labels (بانتظار الموافقة، تم قبول الطلب، جاري التجهيز، خرج مع المندوب، تم التسليم، تم الإلغاء); search by order number/customer; status change actions; order detail drawer showing gift customization (greeting card, private message, anonymous flag) and delivery info
+8. التصنيفات (Categories) — CRUD for categories with Arabic + English name, icon, sort order, active toggle
+9. الإعلانات (Ads/Banners) — CRUD for promo banners with image, title, link target, date range, active toggle
+10. الكوبونات (Coupons) — CRUD for coupons: code, type (percentage/fixed), value, min order, usage limit, expiry, active toggle
+11. التقارير والإحصائيات (Reports) — matches comp 3 exactly: date-range selector pill with gold accent, export button, revenue-over-time line chart with emerald stroke and gold highlight points, top-selling-products horizontal bar chart, sales-by-occasion donut, top-performing-stores ranked list with gold rank numbers, commission-earned summary card with large gold figure in IQD, coupon usage stats table
+12. الإشعارات (Notifications) — list of system notifications AND a compose form to send a push notification to all users / specific segment (customers, merchants)
+
+BACKEND INTEGRATION:
+Base URL http://localhost:8000/api/v1 (Wow Gift FastAPI backend, already built).
+Endpoints available: /auth/login, /users/, /merchants/, /stores/, /categories/, /products/, /gift-boxes/, /orders/, /orders/{id}/status, /coupons/, /notifications/, /merchants/{id}/earnings.
+Read C:\Users\HP\Projects\wow-gift\backend\README.md and the routers to get exact paths and shapes.
+
+MOCK FALLBACK (required):
+Every page must render with realistic Arabic mock data when the backend is unreachable. Currency is IQD (دينار عراقي) everywhere — never SAR.
+
+AUTH:
+- JWT in localStorage
+- Role guard: only role "admin" may enter; other roles get an unauthorized page
+
+EXECUTION ORDER — do not stop between phases:
+Phase A: scaffold, Tailwind v4 theme, UI primitives, RTL sidebar layout, auth guard, login page.
+Phase B: Overview, Users, Stores, Store Approvals, Products, Orders.
+Phase C: Categories, Ads, Coupons, Reports, Notifications.
+Phase D: run npm install and npm run build; fix every error; repeat until the build passes.
+
+VERIFICATION — required, with pasted real output:
+- npm install succeeds
+- npm run build succeeds with 0 TypeScript errors — paste the exact output
+- grep confirms no TODO/FIXME/PLACEHOLDER code comments remain
+- list every created file
+- confirm all 11 nav destinations are routed and reachable
+- start the dev server (npm run dev) and report the local URL it binds to
+
+Do not claim success without pasted command output. Do not stop until npm run build passes.

@@ -1,0 +1,83 @@
+Add the phone-verification (OTP) step to the Wow Gift Flutter customer app at C:\Users\HP\Projects\wow-gift\mobile.
+
+Another task is concurrently editing C:\Users\HP\Projects\wow-gift\backend — do NOT touch the backend or admin-dashboard folders. Mobile only.
+Do NOT install Flutter and do NOT run any `flutter` command. Write code only. A later task handles installation and running.
+
+=== APPROVED DESIGN COMPS — read both images before writing any code and restore them faithfully ===
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-4-phone-entry.png
+- C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-5-otp-code.png
+
+Match: layout order, the 4-step checkout progress indicator, spacing rhythm, 14px rounded corners, emerald #0F766E primary, gold #D4AF37 accent, white #FFFFFF background, charcoal #111827 text, Cairo/Tajawal Arabic font, full RTL.
+
+=== BUSINESS INTENT (critical — get the timing right) ===
+The phone step must NOT appear when the app opens. It appears EXCLUSIVELY when the customer has finished preparing the gift and taps the checkout / complete-order button. This is deliberate: showing it earlier raises abandonment. Everything before checkout stays fully browsable without any phone prompt.
+
+=== DECISIONS ALREADY MADE (implement exactly) ===
+1. The verified phone belongs to the customer's ACCOUNT and is verified ONCE per number. If the account is already verified, checkout must skip both phone screens entirely and go straight to delivery/payment.
+2. The RECIPIENT phone in the delivery form is a separate field and is NOT verified. Leave it as is.
+3. Re-verification is only triggered if the customer changes their own phone number.
+4. Code is 6 numeric digits. Customer may receive it by SMS or WhatsApp.
+
+=== EXACT BACKEND CONTRACT (already being implemented — code against this precisely) ===
+
+POST /api/v1/auth/phone/request-otp
+  body: { "phone": "+9647XXXXXXXX", "channel": "sms" | "whatsapp" }
+  200:  { "request_id": "<uuid>", "phone": "...", "channel": "sms",
+           "expires_in_seconds": 300, "resend_after_seconds": 60, "dev_code": "123456" | null }
+  429:  { "detail": "...", "retry_after_seconds": N }
+
+POST /api/v1/auth/phone/verify-otp
+  body: { "request_id": "<uuid>", "code": "123456" }
+  200:  { "verified": true, "phone": "...", "phone_verified_at": "<iso8601>" }
+  400:  { "detail": "...", "attempts_remaining": N }
+  410:  expired
+
+GET /api/v1/users/me  → now also returns "phone", "phone_verified", "phone_verified_at"
+
+POST /api/v1/orders/  → 403 with { "detail": "phone_not_verified", "code": "PHONE_NOT_VERIFIED" } if unverified.
+
+Both phone endpoints require the JWT.
+
+=== WHAT TO BUILD ===
+
+New feature module `lib/features/phone_verification/` following the existing clean-architecture layout used elsewhere in this app (domain / data / presentation with cubit). Read an existing feature such as `lib/features/home/` first and mirror its conventions exactly.
+
+Screen 1 — PhoneEntryScreen (restore page-4 comp)
+- Back chevron pointing right (RTL).
+- 4-step checkout progress indicator, step 2 active in emerald, step 1 completed with a gold check.
+- Arabic headline asking to confirm the phone number; muted sub-line explaining it lets the courier reach them.
+- Phone field: rounded 14px, emerald focus ring, fixed +964 country-code chip positioned on the RIGHT in RTL, phone icon, numeric keyboard.
+- Client-side validation of an Iraqi mobile number; submit to E.164 (+964...). Show a clear Arabic inline error for malformed input; keep the button disabled until valid.
+- Two selectable pills side by side: SMS and WhatsApp, active one outlined in gold. Default SMS.
+- Full-width emerald primary button, white Arabic label, to send the code. Shows an inline loading state while the request is in flight.
+- Small muted trust note with a shield icon at the bottom.
+
+Screen 2 — OtpVerificationScreen (restore page-5 comp)
+- 4-step indicator, step 2 active.
+- Arabic headline about entering the code; masked phone shown with a gold "change number" link that returns to screen 1.
+- SIX separate square boxes, 14px rounded, light gray borders; active box has a thicker emerald border; filled boxes get emerald borders. Auto-advance on digit entry, backspace moves focus back, paste of a 6-digit code fills all boxes, auto-submit once the sixth digit is entered.
+- Countdown timer from resend_after_seconds; the resend link is disabled and muted until it reaches zero, then becomes active gold.
+- Full-width emerald confirm button.
+- Gold secondary text link to switch the delivery channel to WhatsApp and resend.
+- Error handling: on 400 show the Arabic error with remaining attempts and shake/clear the boxes; on 410 tell the user the code expired and offer resend; on 429 show the wait time.
+- In development, if the response contains dev_code, prefill the boxes and show a small muted debug hint so the flow can be tested without a real SMS. Guard this behind a const kDevMode flag so it can be switched off.
+
+Checkout wiring (this is the part that must be exactly right)
+- Locate the existing checkout entry point (the cart / prepare-gift screen's complete-order button) and the CheckoutScreen.
+- On tapping complete-order: read the cached user; if `phone_verified` is true, navigate straight to the existing CheckoutScreen unchanged. If false, push PhoneEntryScreen → OtpVerificationScreen, and on success continue automatically to CheckoutScreen. The customer must never have to tap complete-order twice.
+- Persist `phone_verified` and the verified phone locally via the existing shared_preferences local data source, and refresh it from /users/me after a successful verification.
+- Prefill the delivery form's own customer-contact field with the verified phone where that makes sense, but leave the separate RECIPIENT phone field untouched.
+- Also handle the backend gate defensively: if order submission ever returns 403 PHONE_NOT_VERIFIED, route the customer into the phone flow and resume the order afterwards.
+- Register any new routes in `lib/app_router.dart` and any new dependencies in `lib/core/di/service_locator.dart`, following existing patterns.
+
+Offline / no-backend behaviour
+- This app already falls back to mock data when the backend is unreachable. Keep that spirit: if the OTP endpoints are unreachable, surface a clear Arabic error rather than crashing, and provide a mock path consistent with how the other repositories do it so the UI remains explorable.
+
+=== CONSTRAINTS ===
+- Valid Dart only. No TODO / FIXME / placeholder comments left behind.
+- All user-visible text in Arabic.
+- Reuse existing theme tokens and shared widgets; do not hardcode colors that already exist in AppColors.
+- Do not break or restructure existing screens beyond the minimal checkout wiring described above.
+
+=== REPORT ===
+List every file created or modified, and state precisely where the checkout gate was inserted (file and function). Explicitly confirm that nothing triggers the phone step at app launch or anywhere before the complete-order tap.

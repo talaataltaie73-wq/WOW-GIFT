@@ -1,0 +1,63 @@
+Independent verification task. Do NOT trust the previous task's claims — verify everything yourself.
+
+The Wow Gift Flutter customer app was just compiled and is claimed to be running at http://127.0.0.1:8080, with the FastAPI backend at http://127.0.0.1:8000. Puppeteer / headless Chrome is available on this machine.
+
+Your job: drive the actual running app in a real browser and prove the phone-verification flow behaves exactly as specified. Then report honestly.
+
+=== FIRST: confirm both servers are alive ===
+curl http://127.0.0.1:8000/health and curl http://127.0.0.1:8080/
+If either is down, restart it:
+- backend: cd C:\Users\HP\Projects\wow-gift\backend and start uvicorn on port 8000 detached
+- frontend: serve C:\Users\HP\Projects\wow-gift\mobile\build\web on port 8080 detached (a static server is fine; rebuild with `flutter build web` only if the build output is missing)
+Both must remain running detached after your task ends — the user will open the app.
+
+=== IMPORTANT: Flutter web renders to canvas ===
+DOM selectors will mostly NOT work. You must interact by COORDINATES and verify by SCREENSHOTS.
+Practical approach with Puppeteer:
+- set a mobile-sized viewport, e.g. 430x932, deviceScaleFactor 2
+- wait generously after navigation (Flutter bootstrap takes several seconds); wait until the screenshot is non-blank before acting
+- take a screenshot, LOOK at it with file_read to find the element you want, then click its pixel coordinates with page.mouse.click
+- for text entry, click the field first then use page.keyboard.type
+- after every interaction, wait then screenshot again to confirm what happened
+- collect console errors and page errors throughout the whole session
+
+Save every screenshot into C:\Users\HP\Projects\wow-gift\verdent-design\stage2\screenshots\verify\ with descriptive numbered names.
+
+=== THE CRITICAL ASSERTION (this is the whole point) ===
+The phone-verification step must appear ONLY when the customer taps the complete-order / checkout button in the cart. It must NOT appear at app launch, not on the home screen, not during browsing.
+
+Verify BOTH halves:
+A) Launch the app fresh. Screenshot the very first screen. Confirm there is NO phone entry and NO OTP screen anywhere before checkout. Browse: open a category, open a product, go back, open the gift-box/customization flow. Screenshot each. Confirm no phone prompt appears at any point.
+B) Then reach the cart and tap the complete-order button. Confirm the phone entry screen NOW appears.
+
+=== FULL FLOW TO DRIVE ===
+1. App launch → home screen renders (real content, not blank, not an error screen).
+2. Navigate to a product and add it to the gift box / cart. If the UI requires a login before cart, register or log in through the app UI; if a customer account is needed, create one via the app, or via the backend API if the app has no registration path — state which you did.
+3. Open the cart, verify the item is there, prices shown in IQD (د.ع).
+4. Tap complete-order → PHONE ENTRY SCREEN must appear. Screenshot it. Compare against the approved comp C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-4-phone-entry.png and report visual fidelity honestly (layout, +964 chip on the right, SMS/WhatsApp pills, 4-step progress, emerald button, RTL).
+5. Enter a valid Iraqi mobile number, keep channel SMS, submit.
+6. OTP SCREEN must appear. Screenshot it. Compare against C:\Users\HP\Projects\wow-gift\verdent-design\stage2\pages\page-5-otp-code.png and report fidelity honestly (6 boxes, countdown, change-number link, WhatsApp switch link).
+7. Get the code. The backend runs in dev mode and returns dev_code in the request-otp response; the app is supposed to prefill the boxes when kDevMode is on. If it prefilled, note that. If not, obtain the code from the backend (server log or by calling the API directly) and type it into the boxes.
+8. Confirm auto-submit on the 6th digit, or tap confirm.
+9. Verification must succeed and the app must continue AUTOMATICALLY to the checkout/delivery screen — the user must NOT have to tap complete-order a second time. Verify this explicitly. Screenshot.
+10. Then verify the SKIP behaviour: with the same now-verified account, go back, add another item, tap complete-order again. The phone screens must be SKIPPED entirely and go straight to checkout. Screenshot. This is a key requirement.
+
+=== ALSO TEST THE ERROR PATHS ===
+11. Wrong code: start a fresh verification with an unverified account and type 6 wrong digits. Confirm an Arabic error appears mentioning remaining attempts, and the boxes clear/shake.
+12. Resend timer: confirm the resend link is disabled and shows a countdown, and becomes active after it expires.
+
+=== FIX WHAT YOU FIND ===
+If you find a bug that breaks the flow, fix it properly at the root cause, rebuild with `flutter build web`, restart the static server, and re-verify from the affected step. Do not silence errors, do not stub things out, do not delete features. Log every bug found and how you fixed it.
+
+=== REPORT — be brutally honest ===
+- Did the app render? Paste the console error list (or state it was clean).
+- Explicit yes/no: does anything trigger the phone step before the complete-order tap?
+- Explicit yes/no: did the phone step appear on the complete-order tap?
+- Explicit yes/no: did it continue automatically to checkout after verification?
+- Explicit yes/no: was the phone step skipped on the second order?
+- Visual fidelity vs both comps — honest assessment, note any deviation.
+- Every bug found and fixed.
+- Every screenshot path.
+- Anything you could NOT verify, and why.
+
+If something does not work, SAY SO. A failed verification reported honestly is far more valuable than a false pass.

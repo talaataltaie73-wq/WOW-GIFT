@@ -1,0 +1,14 @@
+Build the FastAPI backend for Wow Gift gift-giving app at C:\Users\HP\Projects\wow-gift\backend. Requirements:
+
+1. Project scaffold: main.py, app/ package with routers, models, schemas, services, core, dependencies, database.py.
+2. Use SQLAlchemy 2.0 with async support. Default to SQLite for development (aiosqlite), keep PostgreSQL config ready for production via env var DATABASE_URL.
+3. Pydantic v2 schemas.
+4. JWT authentication: register/login for customers and merchants using python-jose and passlib bcrypt.
+5. Database models (SQLAlchemy): User, Merchant, Store, Category, Product, GiftBox, Order, OrderItem, OrderStatusHistory, Address, Coupon, Favorite, Notification, OccasionReminder.
+6. API routers: auth, users, merchants, stores, categories, products, gift_boxes, orders, addresses, coupons, favorites, notifications, reminders.
+7. Include Alembic migrations setup.
+8. Add requirements.txt and .env.example.
+9. Seed sample categories, products, gift boxes.
+10. Add README with run instructions.
+
+Follow Clean Architecture principles. Keep code modular and RTL/i18n-ready for Arabic frontend. Ensure all endpoints include basic validation. Write at least smoke tests with pytest + httpx + pytest-asyncio.

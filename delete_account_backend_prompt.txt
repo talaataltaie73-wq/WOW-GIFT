@@ -1,0 +1,52 @@
+Add account deletion to the Wow Gift FastAPI backend at C:\Users\HP\Projects\wow-gift\backend.
+
+Backend ONLY. Do NOT touch C:\Users\HP\Projects\wow-gift\mobile or the admin-dashboard folder — another task is editing the mobile app right now.
+
+Context: the customer mobile app needs a "حذف الحساب" (delete account) action placed under logout, so a customer can delete their own account. You are building the API side. A follow-up task will build the mobile UI against your contract, so the contract must be exact and final.
+
+=== WHAT TO BUILD ===
+
+`DELETE /api/v1/users/me` — authenticated customer deletes their OWN account.
+
+Requirements:
+- Requires a valid JWT. Returns 401 without one.
+- Require the user to confirm by supplying their current password in the request body, so a stolen token alone cannot delete an account. Wrong password → 403. If the project has accounts without a usable password, handle that case sensibly and document it.
+- Decide and implement the correct deletion strategy, and justify it in your report. Consider that orders are financial/operational records: hard-deleting a user who has orders will either violate foreign keys or destroy order history the business needs.
+  Recommended approach unless you find a strong reason otherwise: SOFT delete / anonymise. Add `is_deleted` and `deleted_at` to the user, scrub or anonymise personal data (name, email, phone, addresses, push tokens), release the email and phone so they can be reused for a fresh signup (e.g. by rewriting them to a unique anonymised value), and keep order rows intact but no longer linked to identifiable personal data.
+  Whatever you choose, be explicit and consistent.
+- A deleted user must NOT be able to authenticate afterwards. Login must fail, and any existing token must stop working — enforce this in the auth dependency, not only at the login endpoint.
+- Cascade-clean the data that is genuinely personal and safe to remove: favorites, occasion reminders, notifications, addresses, and any pending phone-verification rows.
+- Admins must not be able to delete themselves through this endpoint by accident — restrict it to the customer role, or explicitly handle the admin case. State your choice.
+- Return a clear response body confirming deletion.
+
+Also add, if it does not already exist:
+- An admin-side endpoint or an existing-endpoint adjustment so admins can see that an account is deleted rather than seeing a ghost user, and so deleted users are excluded from normal user listings by default.
+
+=== MIGRATION ===
+Add an Alembic migration for the new columns, following the pattern of the existing migrations (the most recent is `c9a4de39f8ca`).
+
+=== TESTS ===
+Add tests to the existing suite covering at minimum:
+- delete succeeds with correct password
+- delete fails with wrong password (403)
+- delete fails without a token (401)
+- after deletion, login with the old credentials fails
+- after deletion, the previously issued token is rejected
+- a user with existing orders can be deleted and the order rows still exist
+- the freed email can be used to register a new account
+- deleted users do not appear in the admin user listing
+
+The FULL suite must pass — it is currently at 45 passing. Run `python -m pytest tests/ -v` and paste the real output.
+
+=== ALSO: prove it live ===
+Start the server and run a real HTTP sequence with curl or a small script: register → login → create an order → delete account with password → confirm login now fails → confirm the old token is rejected → confirm the order row still exists in the DB → re-register with the same email successfully. Paste the actual status codes and response bodies.
+
+=== REPORT ===
+- The exact final API contract: method, path, request body, and every response shape and status code. Be precise — the mobile task will code directly against this.
+- Your deletion strategy and why you chose it.
+- Which data is removed, which is anonymised, and which is retained.
+- Full pytest output with the passing count.
+- The live HTTP trace.
+- Files created and modified.
+
+Do not claim success without pasted test output and the live HTTP trace.
