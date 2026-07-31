@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: wow-gift-mobile-web
+    env: node
+    plan: free
+    buildCommand: npm install -g http-server && echo "Build complete"
+    startCommand: cd build/web && http-server -p $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
