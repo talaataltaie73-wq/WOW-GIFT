@@ -3,7 +3,12 @@ services:
     name: wow-gift-api
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt && \
+      cd admin-dashboard && \
+      npm install && \
+      npm run build && \
+      cd ..
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
