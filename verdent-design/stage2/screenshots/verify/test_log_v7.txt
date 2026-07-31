@@ -1,0 +1,117 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v7
+============================================================
+  Viewport: 500x749
+
+=== LOADING APP ===
+  Waiting for Flutter...
+  Waiting 8s for splash animation...
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v7_01_home.png
+
+=== STEP 2: BROWSE TABS ===
+  [TAP] (250,724) صناديق tab
+  [SS] v7_02_boxes.png
+  [TAP] (350,724) المناسبات tab
+  [SS] v7_03_occasions.png
+  [TAP] (50,724) حسابي tab
+  [SS] v7_04_profile.png
+
+=== STEP 3: CART (EMPTY) ===
+  [TAP] (150,724) السلة tab
+  [SS] v7_05_cart_empty.png
+  ASSERTION A-5: Cart empty, NO phone entry
+
+=== STEP 4: CHOOSE BOX ===
+  [TAP] (250,490) اختيار صندوق هدية
+  [SS] v7_06_boxes_selection.png
+  [TAP] (370,250) صندوق الأناقة
+  [SS] v7_07_box_sheet.png
+  [TAP] (250,699) اختيار هذا الصندوق
+  [SS] v7_08_after_box.png
+
+=== STEP 5: SEARCH FOR PRODUCT ===
+  [TAP] (440,120) عطر chip
+  [SS] v7_09_search.png
+  [TAP] (370,250) first product
+  [SS] v7_10_product.png
+
+=== STEP 6: ADD TO CART ===
+  [TAP] (250,669) إضافة إلى صندوق الهدية
+  [SS] v7_11_after_add.png
+
+=== STEP 7: NAVIGATE BACK ===
+  [TAP] (475,40) back from product
+  [SS] v7_12_back_to_search.png
+  [TAP] (475,40) back from search
+  [SS] v7_13_back_to_boxes.png
+  [TAP] (475,40) back from boxes
+  [SS] v7_14_back_to_cart.png
+  Cart should now show items
+
+=== STEP 8: SCROLL TO CHECKOUT ===
+  [SS] v7_15_cart_scrolled.png
+
+=== STEP 9: TAP CHECKOUT ===
+  [TAP] (250,669) checkout attempt 1
+  [SS] v7_16_checkout1.png
+  [TAP] (250,599) checkout attempt 2
+  [TAP] (250,549) checkout attempt 3
+  [SS] v7_17_checkout_result.png
+  ASSERTION B: Phone entry should appear NOW
+
+=== STEP 10: PHONE ENTRY ===
+  [SS] v7_18_phone.png
+  [TAP] (100,337) phone field
+  [TYPE] '7501234567'
+  [SS] v7_19_phone_typed.png
+  [TAP] (250,509) إرسال رمز التحقق
+  [SS] v7_20_after_submit.png
+
+=== STEP 11: OTP ===
+  [SS] v7_21_otp.png
+  [SS] v7_22_otp_wait.png
+  [TAP] (250,486) تأكيد ومتابعة
+  [SS] v7_23_after_verify.png
+
+=== STEP 12: AUTO-CONTINUE ===
+  [SS] v7_24_checkout.png
+
+=== STEP 13: SKIP ===
+  [TAP] (475,40) back from checkout
+  [TAP] (150,724) السلة tab
+  [TAP] (250,669) checkout 2nd
+  [TAP] (250,599) checkout 2nd attempt 2
+  [SS] v7_25_skip.png
+  ASSERTION: Should skip phone, go to checkout
+
+=== CONSOLE ===
+  SEVERE: 31
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    https://fastly.picsum.photos/id/953/400/400.jpg?hmac=sCGl1xt9pdRyzGnhO5N_HVo_bObR1VVbUitw72cZ7K4 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/529/400/400.jpg?hmac=bCtFJr1TII4Rsj3HegnA1ASa_PhephYiW0ToXPHE_mA - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/1083/200/200.jpg?hmac=ocBiYtawFGXm884DNfTBRQy65ZWvsTQf_XCnlTUdtB4 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/452/400/400.jpg?hmac=ERBYjvlNNqVzMZSKK2czOgTP2QRPe8PQiOLvHTsNCsE - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/954/400/400.jpg?hmac=Ov_K_SaxkGtW_fJhn1L60ygBTPQOU5xBdCu8FsTX8lk - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/907/200/200.jpg?hmac=SdeLZNONJ3CX-OB15hSXsCheWDC6yYac5N5VUJM7FIQ - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/517/800/400.jpg?hmac=XVJy4tUzRUUePzWJtWU6vscgSMTf6HueCueoARFdzC8 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/737/200/200.jpg?hmac=YPktyFzukhcmeW3VgULbam5iZTWOMXfwf6WIBPpJD50 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/211/400/400.jpg?hmac=2U964Du2fXmQmp5AvcmTfvCTLCrw_qG5twoD1JdFyG0 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/369/400/400.jpg?hmac=T792nS1lCQzIwTFiLql9OR6BL_A_gBOncT8UV204NTM - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/778/400/400.jpg?hmac=-SMsjVw7CxhvXLAwy7-Xc7gh2mS_gGjlfjmI6fOIiEU - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/609/200/200.jpg?hmac=Fe1MOOyr8RJSloodBDzO2oMGF2NvnJVhuoGNDTC5clU - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/694/400/400.jpg?hmac=giLKsWSERk1VolJLVdlDSWa2pDdPHUzSB0Zrb7qa_2I - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/1011/400/400.jpg?hmac=jvBe5mf7uDeDmAW3ktW1MawUOEOejOAaMOCgicg1pbc - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/109/800/400.jpg?hmac=gVDWcd0U95zMO710vpPcqPY_2qEj71GUZQIFESX20xM - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/930/400/400.jpg?hmac=OchcmNUl50qcDgsUCHCZP-Fmqj9tbHs8wfY4G5S5R3g - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/431/400/400.jpg?hmac=Oot4SFm6VI21PRRZZr_UiKXXo1G4T2XUFsBDELwBaGc - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/689/400/400.jpg?hmac=NvkVc1UJ41NbsI2ui-Y2x5nrSwo_cuv6fXe7RwwG38A - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/158/800/400.jpg?hmac=dQDFGyaxq7O0VceLN-wWZqB5UW84raan8hnKIU9o0Wg - Failed to load resource: net::ERR_CONNECTION_RESET
+    http://127.0.0.1:8080/assets/assets/icons/whatsapp.png - Failed to load resource: the server responded with a status of 404 (File not found)
+
+Screenshots: 25

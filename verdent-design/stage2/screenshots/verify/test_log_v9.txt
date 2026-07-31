@@ -1,0 +1,58 @@
+============================================================
+WOW GIFT - Final Verification Test v9
+============================================================
+
+========================================
+TEST 1: UNVERIFIED USER → CHECKOUT
+========================================
+  Viewport: 500x749, BN_Y: 724
+  Canvas NOT found after timeout
+  [SS] v9_01_home.png
+
+--- ADD ITEM TO CART ---
+  [TAP] (150,724) السلة tab
+  [TAP] (250,490) اختيار صندوق هدية
+  [TAP] (370,250) صندوق الأناقة
+  [TAP] (250,699) اختيار هذا الصندوق
+  [TAP] (440,120) عطر chip
+  [TAP] (370,250) first product
+  [TAP] (250,669) إضافة إلى صندوق الهدية
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+--- ITEM ADDED ---
+  [SS] v9_02_cart_items.png
+  [SS] v9_03_scrolled.png
+  [TAP] (250,625) متابعة الطلب
+  [SS] v9_04_after_checkout.png
+  EXPECTED: Phone entry screen
+  [TAP] (250,640) متابعة الطلب attempt 2
+  [SS] v9_05_checkout2.png
+
+========================================
+TEST 2: VERIFIED USER → CHECKOUT (SKIP)
+========================================
+  Canvas NOT found after timeout
+  [SS] v9_06_home_verified.png
+
+--- ADD ITEM TO CART ---
+  [TAP] (150,724) السلة tab
+  [TAP] (250,490) اختيار صندوق هدية
+  [TAP] (370,250) صندوق الأناقة
+  [TAP] (250,699) اختيار هذا الصندوق
+  [TAP] (440,120) عطر chip
+  [TAP] (370,250) first product
+  [TAP] (250,669) إضافة إلى صندوق الهدية
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+--- ITEM ADDED ---
+  [SS] v9_07_cart_items.png
+  [SS] v9_08_scrolled.png
+  [TAP] (250,625) متابعة الطلب (verified)
+  [SS] v9_09_skip_result.png
+  EXPECTED: Checkout/delivery screen (NOT phone entry)
+  [TAP] (250,640) متابعة الطلب attempt 2
+  [SS] v9_10_skip2.png
+
+Screenshots: 10

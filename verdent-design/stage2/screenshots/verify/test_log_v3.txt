@@ -1,0 +1,130 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v3
+============================================================
+  Viewport: 500x781
+
+=== LOADING APP ===
+  Token injected, reloading...
+  Waiting for app to load past splash screen...
+    2s: canvas=no
+    4s: canvas=no
+    6s: canvas=no
+    8s: canvas=no
+    10s: canvas=no
+    12s: canvas=no
+    14s: canvas=no
+    16s: canvas=no
+    18s: canvas=no
+    20s: canvas=no
+    22s: canvas=yes
+    Canvas found, waiting for splash to finish...
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v3_01_home.png
+  ASSERTION A-1: Home screen, NO phone entry
+
+=== STEP 2: BROWSE TABS ===
+  [CLICK] (370,756)
+  [SS] v3_02_boxes.png
+  ASSERTION A-2: Gift boxes, NO phone
+  [CLICK] (285,756)
+  [SS] v3_03_occasions.png
+  ASSERTION A-3: Occasions, NO phone
+  [CLICK] (110,756)
+  [SS] v3_04_profile.png
+  ASSERTION A-4: Profile, NO phone
+  [CLICK] (200,756)
+  [SS] v3_05_cart_empty.png
+  ASSERTION A-5: Cart (empty), NO phone
+
+=== STEP 3: ADD ITEM TO CART ===
+  [CLICK] (457,756)
+  [CLICK] (200,756)
+  [CLICK] (250,390)
+  [SS] v3_06_choose_box.png
+  [CLICK] (250,300)
+  [SS] v3_07_box_options.png
+  [CLICK] (250,721)
+  [SS] v3_08_after_box.png
+  [CLICK] (440,120)
+  [SS] v3_09_search.png
+  [CLICK] (250,300)
+  [SS] v3_10_product.png
+  [CLICK] (250,701)
+  [SS] v3_11_after_add.png
+
+=== NAVIGATING BACK ===
+  [CLICK] (475,40)
+  [SS] v3_12_back1.png
+  [CLICK] (475,40)
+  [SS] v3_13_back2.png
+  [CLICK] (200,756)
+  [SS] v3_14_cart.png
+
+=== STEP 4: SCROLL TO CHECKOUT ===
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SS] v3_15_cart_scrolled.png
+
+=== STEP 5: TAP CHECKOUT ===
+  [CLICK] (250,701)
+  [SS] v3_16_after_checkout.png
+  [CLICK] (250,631)
+  [SS] v3_17_checkout_attempt2.png
+
+=== STEP 6: PHONE ENTRY ===
+  [SS] v3_18_phone_entry.png
+  [CLICK] (200,351)
+  [TYPE] '7501234567'
+  [SS] v3_19_phone_typed.png
+  [CLICK] (250,546)
+  [SS] v3_20_after_submit.png
+
+=== STEP 7: OTP SCREEN ===
+  [SS] v3_21_otp.png
+  [SS] v3_22_otp_prefilled.png
+  [CLICK] (250,507)
+  [SS] v3_23_after_verify.png
+
+=== STEP 8: CHECK AUTO-CONTINUE ===
+  [SS] v3_24_checkout_screen.png
+  ASSERTION: Should be on checkout/delivery screen
+
+=== STEP 9: SKIP BEHAVIOR ===
+  [CLICK] (475,40)
+  [SS] v3_25_back_from_checkout.png
+  [CLICK] (200,756)
+  [SS] v3_26_cart_again.png
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [SCROLL] (250,390) dy=400
+  [CLICK] (250,701)
+  [SS] v3_27_second_checkout.png
+  ASSERTION: Should skip phone and go to checkout directly
+
+=== CONSOLE ERRORS ===
+  Total SEVERE errors: 33
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+
+============================================================
+SCREENSHOTS: 27
+============================================================

@@ -1,0 +1,108 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v6
+============================================================
+  User: verify_test@gmail.com, phone_verified: False
+  Viewport: 500x749
+
+=== LOADING APP ===
+  Token + cart data injected
+  Waiting for Flutter canvas...
+  WARNING: No canvas found
+  Waiting 8s for splash...
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v6_01_home.png
+  ASSERTION A-1: Home screen, NO phone entry
+
+=== STEP 2: BROWSE TABS ===
+  [TAP] (250,724) صناديق
+  [SS] v6_02_boxes.png
+  ASSERTION A-2: Boxes, NO phone
+  [TAP] (350,724) المناسبات
+  [SS] v6_03_occasions.png
+  ASSERTION A-3: Occasions, NO phone
+  [TAP] (50,724) حسابي
+  [SS] v6_04_profile.png
+  ASSERTION A-4: Profile, NO phone
+
+=== STEP 3: CART WITH ITEMS ===
+  [TAP] (150,724) السلة
+  [SS] v6_05_cart.png
+  Cart should show items (pre-populated)
+
+=== STEP 4: SCROLL TO CHECKOUT ===
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SS] v6_06_scrolled.png
+
+=== STEP 5: TAP CHECKOUT ===
+  [TAP] (250,699) checkout at y=699
+  [TAP] (250,649) checkout at y=649
+  [TAP] (250,599) checkout at y=599
+  [TAP] (250,549) checkout at y=549
+  [TAP] (250,499) checkout at y=499
+  [SS] v6_07_after_checkout.png
+  ASSERTION B: Phone entry should appear
+
+=== STEP 6: PHONE ENTRY ===
+  [SS] v6_08_phone.png
+  [TAP] (100,337) phone field
+  [TYPE] '7501234567'
+  [SS] v6_09_phone_typed.png
+  [TAP] (250,509) إرسال رمز التحقق
+  [SS] v6_10_after_submit.png
+
+=== STEP 7: OTP ===
+  [SS] v6_11_otp.png
+  [SS] v6_12_otp_wait.png
+  [TAP] (250,486) تأكيد ومتابعة
+  [SS] v6_13_after_verify.png
+
+=== STEP 8: AUTO-CONTINUE ===
+  [SS] v6_14_checkout.png
+  ASSERTION: Should be on checkout screen
+
+=== STEP 9: SKIP ===
+  [TAP] (475,40) back
+  [TAP] (150,724) السلة
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [SCROLL] (250,374) dy=300
+  [TAP] (250,699) checkout2 at y=699
+  [TAP] (250,649) checkout2 at y=649
+  [TAP] (250,599) checkout2 at y=599
+  [TAP] (250,549) checkout2 at y=549
+  [TAP] (250,499) checkout2 at y=499
+  [SS] v6_15_skip.png
+  ASSERTION: Should skip phone, go to checkout
+
+=== CONSOLE ===
+  SEVERE: 16
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    https://fastly.picsum.photos/id/907/200/200.jpg?hmac=SdeLZNONJ3CX-OB15hSXsCheWDC6yYac5N5VUJM7FIQ - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/452/400/400.jpg?hmac=ERBYjvlNNqVzMZSKK2czOgTP2QRPe8PQiOLvHTsNCsE - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/529/400/400.jpg?hmac=bCtFJr1TII4Rsj3HegnA1ASa_PhephYiW0ToXPHE_mA - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/1083/200/200.jpg?hmac=ocBiYtawFGXm884DNfTBRQy65ZWvsTQf_XCnlTUdtB4 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/954/400/400.jpg?hmac=Ov_K_SaxkGtW_fJhn1L60ygBTPQOU5xBdCu8FsTX8lk - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/953/400/400.jpg?hmac=sCGl1xt9pdRyzGnhO5N_HVo_bObR1VVbUitw72cZ7K4 - Failed to load resource: net::ERR_CONNECTION_RESET
+
+Screenshots: 15

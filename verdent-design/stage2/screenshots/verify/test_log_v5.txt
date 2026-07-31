@@ -1,0 +1,138 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v5 (final)
+============================================================
+  Viewport: 500x749
+
+=== LOADING APP ===
+  Token injected, reloading...
+  Waiting for Flutter canvas...
+  WARNING: No canvas found after timeout
+  Waiting 8s for splash animation to complete...
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v5_01_home.png
+  ASSERTION A-1: Home screen visible, NO phone entry
+
+=== STEP 2: BROWSE TABS ===
+  [TAP] (250,724) صناديق
+  [SS] v5_02_boxes.png
+  ASSERTION A-2: Gift boxes, NO phone
+  [TAP] (350,724) المناسبات
+  [SS] v5_03_occasions.png
+  ASSERTION A-3: Occasions, NO phone
+  [TAP] (50,724) حسابي
+  [SS] v5_04_profile.png
+  ASSERTION A-4: Profile, NO phone
+  [TAP] (150,724) السلة
+  [SS] v5_05_cart_empty.png
+  ASSERTION A-5: Cart (empty), NO phone
+
+=== STEP 3: ADD ITEM TO CART ===
+  [TAP] (250,490) اختيار صندوق هدية
+  [SS] v5_06_gift_boxes.png
+  [TAP] (370,250) صندوق الأناقة
+  [SS] v5_07_box_sheet.png
+  [TAP] (250,699) اختيار هذا الصندوق
+  [SS] v5_08_after_box.png
+  [TAP] (440,120) عطر chip
+  [SS] v5_09_search.png
+  [TAP] (370,200) first product
+  [SS] v5_10_product.png
+  [SCROLL] (250,374) dy=500
+  [SS] v5_11_scrolled.png
+  [TAP] (250,669) إضافة إلى صندوق الهدية
+  [SS] v5_12_after_add.png
+
+=== NAVIGATING BACK ===
+  [TAP] (475,40) back from product
+  [SS] v5_13_back1.png
+  [TAP] (475,40) back from search
+  [SS] v5_14_back2.png
+  [TAP] (150,724) السلة tab
+  [SS] v5_15_cart.png
+  Cart should now show items
+
+=== STEP 4: SCROLL TO CHECKOUT ===
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SS] v5_16_scrolled.png
+
+=== STEP 5: TAP CHECKOUT (متابعة الطلب) ===
+  [TAP] (250,669) متابعة الطلب attempt 1
+  [SS] v5_17_checkout1.png
+  [TAP] (250,599) متابعة الطلب attempt 2
+  [TAP] (250,549) متابعة الطلب attempt 3
+  [SS] v5_18_checkout_result.png
+  ASSERTION B: Phone entry screen should NOW appear
+
+=== STEP 6: PHONE ENTRY ===
+  [SS] v5_19_phone_entry.png
+  [TAP] (100,337) phone field
+  [TYPE] '7501234567'
+  [SS] v5_20_phone_typed.png
+  [TAP] (250,509) إرسال رمز التحقق
+  [SS] v5_21_after_submit.png
+
+=== STEP 7: OTP SCREEN ===
+  [SS] v5_22_otp.png
+  [SS] v5_23_otp_prefilled.png
+  [TAP] (250,486) تأكيد ومتابعة
+  [SS] v5_24_after_verify.png
+
+=== STEP 8: CHECK AUTO-CONTINUE ===
+  [SS] v5_25_checkout_screen.png
+  ASSERTION: Should be on checkout/delivery screen
+
+=== STEP 9: SKIP BEHAVIOR ===
+  [TAP] (475,40) back from checkout
+  [TAP] (150,724) السلة tab
+  [SS] v5_26_cart_again.png
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [SCROLL] (250,374) dy=400
+  [TAP] (250,669) متابعة الطلب (2nd)
+  [TAP] (250,599) متابعة الطلب (2nd) attempt 2
+  [SS] v5_27_skip.png
+  ASSERTION: Should skip phone and go to checkout directly
+
+=== CONSOLE ERRORS ===
+  Total SEVERE: 29
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    https://fastly.picsum.photos/id/529/400/400.jpg?hmac=bCtFJr1TII4Rsj3HegnA1ASa_PhephYiW0ToXPHE_mA - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/1083/200/200.jpg?hmac=ocBiYtawFGXm884DNfTBRQy65ZWvsTQf_XCnlTUdtB4 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/953/400/400.jpg?hmac=sCGl1xt9pdRyzGnhO5N_HVo_bObR1VVbUitw72cZ7K4 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/452/400/400.jpg?hmac=ERBYjvlNNqVzMZSKK2czOgTP2QRPe8PQiOLvHTsNCsE - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/954/400/400.jpg?hmac=Ov_K_SaxkGtW_fJhn1L60ygBTPQOU5xBdCu8FsTX8lk - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/907/200/200.jpg?hmac=SdeLZNONJ3CX-OB15hSXsCheWDC6yYac5N5VUJM7FIQ - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/694/400/400.jpg?hmac=giLKsWSERk1VolJLVdlDSWa2pDdPHUzSB0Zrb7qa_2I - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/369/400/400.jpg?hmac=T792nS1lCQzIwTFiLql9OR6BL_A_gBOncT8UV204NTM - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/930/400/400.jpg?hmac=OchcmNUl50qcDgsUCHCZP-Fmqj9tbHs8wfY4G5S5R3g - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/689/400/400.jpg?hmac=NvkVc1UJ41NbsI2ui-Y2x5nrSwo_cuv6fXe7RwwG38A - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/431/400/400.jpg?hmac=Oot4SFm6VI21PRRZZr_UiKXXo1G4T2XUFsBDELwBaGc - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/158/800/400.jpg?hmac=dQDFGyaxq7O0VceLN-wWZqB5UW84raan8hnKIU9o0Wg - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/211/400/400.jpg?hmac=2U964Du2fXmQmp5AvcmTfvCTLCrw_qG5twoD1JdFyG0 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/1011/400/400.jpg?hmac=jvBe5mf7uDeDmAW3ktW1MawUOEOejOAaMOCgicg1pbc - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/609/200/200.jpg?hmac=Fe1MOOyr8RJSloodBDzO2oMGF2NvnJVhuoGNDTC5clU - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/778/400/400.jpg?hmac=-SMsjVw7CxhvXLAwy7-Xc7gh2mS_gGjlfjmI6fOIiEU - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/737/200/200.jpg?hmac=YPktyFzukhcmeW3VgULbam5iZTWOMXfwf6WIBPpJD50 - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/109/800/400.jpg?hmac=gVDWcd0U95zMO710vpPcqPY_2qEj71GUZQIFESX20xM - Failed to load resource: net::ERR_CONNECTION_RESET
+    https://fastly.picsum.photos/id/517/800/400.jpg?hmac=XVJy4tUzRUUePzWJtWU6vscgSMTf6HueCueoARFdzC8 - Failed to load resource: net::ERR_CONNECTION_RESET
+
+============================================================
+SCREENSHOTS: 27
+============================================================

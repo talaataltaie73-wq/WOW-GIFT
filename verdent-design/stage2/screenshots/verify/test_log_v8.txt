@@ -1,0 +1,90 @@
+============================================================
+WOW GIFT - Phone/OTP Flow Test v8
+============================================================
+
+=== RESET PHONE VERIFICATION ===
+  /auth/me status: 404
+  Response: {"detail":"Not Found"}
+  Viewport: 500x749
+
+=== LOADING APP ===
+  Waiting for Flutter...
+  Waiting 8s for splash...
+  [SS] v8_01_home.png
+
+=== GO TO CART ===
+  [TAP] (150,724) السلة tab
+  [SS] v8_02_cart.png
+
+=== CHOOSE BOX ===
+  [TAP] (250,490) اختيار صندوق هدية
+  [SS] v8_03_boxes.png
+  [TAP] (370,250) صندوق الأناقة
+  [SS] v8_04_box_sheet.png
+  [TAP] (250,699) اختيار هذا الصندوق
+  [SS] v8_05_after_box.png
+
+=== SEARCH & ADD ===
+  [TAP] (440,120) عطر chip
+  [TAP] (370,250) first product
+  [SS] v8_06_product.png
+  [TAP] (250,669) إضافة إلى صندوق الهدية
+  [SS] v8_07_added.png
+
+=== BACK TO CART ===
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+  [TAP] (475,40) back
+  [SS] v8_08_cart_items.png
+
+=== SCROLL TO CHECKOUT ===
+  [SS] v8_09_scrolled.png
+
+=== TAP CHECKOUT ===
+  [TAP] (250,709) متابعة الطلب
+  [SS] v8_10_phone_entry.png
+
+=== PHONE ENTRY ===
+  [TAP] (200,300) phone field
+  [SS] v8_11_field_focused.png
+  Trying insertText for: 7501234567
+  [SS] v8_12_after_type.png
+  [TAP] (200,300) phone field again
+  [TYPE_CHAR] '7501234567'
+  [SS] v8_13_after_char.png
+  [TAP] (200,300) phone field 3rd
+  [KEYDOWN/UP] '7501234567'
+  [SS] v8_14_after_keydown.png
+
+=== SUBMIT PHONE ===
+  [TAP] (250,497) إرسال رمز التحقق
+  [SS] v8_15_after_submit.png
+
+=== OTP CHECK ===
+  [SS] v8_16_otp.png
+  [SS] v8_17_otp_wait.png
+  [TAP] (250,524) تأكيد ومتابعة
+  [SS] v8_18_after_confirm.png
+
+=== API PHONE VERIFY ===
+  request-otp: 404 {"detail":"Not Found"}
+
+=== RELOAD WITH VERIFIED PHONE ===
+  Waiting for Flutter reload...
+  [SS] v8_19_reloaded.png
+  [TAP] (150,724) السلة tab
+  [SS] v8_20_cart_reload.png
+  [SS] v8_21_scrolled.png
+  [TAP] (250,709) متابعة الطلب (skip test)
+  [SS] v8_22_skip_result.png
+  ASSERTION: Should skip phone, go directly to checkout/delivery
+
+=== CONSOLE ===
+  SEVERE: 20
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+
+Screenshots: 22

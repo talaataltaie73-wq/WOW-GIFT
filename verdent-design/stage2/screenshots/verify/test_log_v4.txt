@@ -1,0 +1,103 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v4
+============================================================
+  Viewport: 500x749
+
+=== LOADING APP ===
+  Token injected, reloading...
+  Waiting 30s for Flutter bootstrap + splash...
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v4_01_home.png
+
+=== STEP 2: BROWSE TABS ===
+  [CLICK] (350,724)
+  [SS] v4_02_boxes.png
+  [CLICK] (250,724)
+  [SS] v4_03_occasions.png
+  [CLICK] (50,724)
+  [SS] v4_04_profile.png
+  [CLICK] (150,724)
+  [SS] v4_05_cart_empty.png
+
+=== STEP 3: ADD ITEM ===
+  [CLICK] (250,404)
+  [SS] v4_06_choose_box.png
+  [CLICK] (370,300)
+  [SS] v4_07_box_detail.png
+  [CLICK] (250,699)
+  [SS] v4_08_after_box.png
+  [CLICK] (440,120)
+  [SS] v4_09_search.png
+  [CLICK] (370,250)
+  [SS] v4_10_product.png
+  [CLICK] (250,669)
+  [SS] v4_11_after_add.png
+
+=== BACK TO CART ===
+  [CLICK] (475,40)
+  [SS] v4_12_back1.png
+  [CLICK] (475,40)
+  [SS] v4_13_back2.png
+  [CLICK] (150,724)
+  [SS] v4_14_cart.png
+
+=== SCROLL TO CHECKOUT ===
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SS] v4_15_scrolled.png
+
+=== TAP CHECKOUT ===
+  [CLICK] (250,689)
+  [CLICK] (250,649)
+  [CLICK] (250,599)
+  [CLICK] (250,549)
+  [SS] v4_16_after_checkout.png
+
+=== PHONE ENTRY ===
+  [SS] v4_17_phone.png
+  [CLICK] (170,337)
+  [TYPE] '7501234567'
+  [SS] v4_18_phone_typed.png
+  [CLICK] (250,509)
+  [SS] v4_19_after_submit.png
+
+=== OTP ===
+  [SS] v4_20_otp.png
+  [SS] v4_21_otp_wait.png
+  [CLICK] (250,486)
+  [SS] v4_22_after_verify.png
+
+=== AUTO-CONTINUE ===
+  [SS] v4_23_checkout.png
+
+=== SKIP BEHAVIOR ===
+  [CLICK] (475,40)
+  [CLICK] (150,724)
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [SCROLL] (250,374) dy=500
+  [CLICK] (250,649)
+  [SS] v4_24_skip.png
+
+=== CONSOLE ===
+  SEVERE: 10
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+
+Screenshots: 24

@@ -1,0 +1,108 @@
+============================================================
+WOW GIFT - Phone Verification E2E Test v2
+============================================================
+  Viewport: 500x781
+
+=== LOADING APP ===
+  Auth token injected (phone_verified=false)
+
+=== STEP 1: HOME SCREEN ===
+  [SS] v2_01_home.png
+  ASSERTION A-1: Home screen visible, checking for NO phone entry
+
+=== STEP 2: BROWSE TABS ===
+  [CDP_CLICK] (371,756)
+  [SS] v2_02_boxes.png
+  ASSERTION A-2: Gift boxes tab, NO phone
+  [CDP_CLICK] (285,756)
+  [SS] v2_03_occasions.png
+  ASSERTION A-3: Occasions tab, NO phone
+  [CDP_CLICK] (113,756)
+  [SS] v2_04_profile.png
+  ASSERTION A-4: Profile tab, NO phone
+  [CDP_CLICK] (199,756)
+  [SS] v2_05_cart_empty.png
+  ASSERTION A-5: Cart tab (empty), NO phone
+
+=== STEP 3: ADD ITEM TO CART ===
+  [CDP_CLICK] (250,440)
+  [SS] v2_06_after_choose_box_click.png
+  [CDP_CLICK] (300,250)
+  [SS] v2_07_box_selection.png
+  [CDP_CLICK] (250,721)
+  [SS] v2_08_after_box_select.png
+  [CDP_CLICK] (440,120)
+  [SS] v2_09_category_tap.png
+  [CDP_CLICK] (250,250)
+  [SS] v2_10_product_detail.png
+  [CDP_SCROLL] (250,390) dy=300
+  [SS] v2_11_product_scrolled.png
+  [CDP_CLICK] (250,701)
+  [SS] v2_12_after_add.png
+
+=== NAVIGATING BACK FROM PRODUCT DETAIL ===
+  [CDP_CLICK] (475,35)
+  [SS] v2_13_back_from_product.png
+  [CDP_CLICK] (475,35)
+  [SS] v2_14_back_to_main.png
+  [CDP_CLICK] (199,756)
+  [SS] v2_15_cart_with_items.png
+  Cart should now show items
+
+=== STEP 4: SCROLL TO CHECKOUT ===
+  [CDP_SCROLL] (250,390) dy=500
+  [SS] v2_16_cart_scrolled1.png
+  [CDP_SCROLL] (250,390) dy=500
+  [SS] v2_17_cart_scrolled2.png
+  [CDP_SCROLL] (250,390) dy=500
+  [SS] v2_18_cart_scrolled3.png
+
+=== STEP 5: TAP CHECKOUT (متابعة الطلب) ===
+  [CDP_CLICK] (250,681)
+  [SS] v2_19_after_checkout_tap.png
+  ASSERTION B: Phone entry screen should NOW appear
+
+=== STEP 6: PHONE ENTRY ===
+  [SS] v2_20_phone_entry.png
+  [CDP_CLICK] (250,340)
+  [CDP_TYPE] '7501234567'
+  [SS] v2_21_phone_entered.png
+  [CDP_CLICK] (250,546)
+  [SS] v2_22_after_phone_submit.png
+
+=== STEP 7: OTP SCREEN ===
+  [SS] v2_23_otp_screen.png
+  OTP API response: 404 - {"detail":"Not Found"}
+  [SS] v2_24_otp_after_api.png
+
+=== STEP 8: AUTO-CONTINUE ===
+  [CDP_CLICK] (250,507)
+  [SS] v2_26_after_verify.png
+  ASSERTION: Should be on checkout/delivery screen (auto-continued)
+
+=== STEP 9: SKIP BEHAVIOR ===
+  [CDP_CLICK] (475,35)
+  [SS] v2_27_back_to_home.png
+  [CDP_CLICK] (199,756)
+  [SS] v2_28_cart_second.png
+  [CDP_SCROLL] (250,390) dy=1000
+  [CDP_CLICK] (250,681)
+  [SS] v2_29_second_checkout.png
+  ASSERTION: Should skip phone entry and go directly to checkout
+
+=== CONSOLE ERRORS ===
+  Total console errors: 10
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/banners - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-deals - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/best-sellers - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/stores/featured - Failed to load resource: the server responded with a status of 404 (Not Found)
+    http://localhost:8000/api/v1/products/latest - Failed to load resource: the server responded with a status of 404 (Not Found)
+
+============================================================
+TEST COMPLETE
+============================================================
