@@ -53,6 +53,7 @@ app.add_middleware(
 # ── Routers ──────────────────────────────────────────────────────────────
 API_PREFIX = "/api/v1"
 
+app.include_router(admin_auth.router, prefix=API_PREFIX)
 app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(phone.router, prefix=API_PREFIX)
 app.include_router(users.router, prefix=API_PREFIX)
