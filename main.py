@@ -67,6 +67,15 @@ app.include_router(reminders.router, prefix=API_PREFIX)
 app.include_router(banners.router, prefix=API_PREFIX)
 
 
+@app.get("/")
+async def root():
+    return {
+        "app": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "status": "running"
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "app": settings.APP_NAME}
