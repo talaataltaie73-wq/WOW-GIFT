@@ -1,23 +1,8 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth";
-import { useEffect } from "react";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, user, setUser } = useAuthStore();
-
-  // Auto-login with demo admin account for development
-  useEffect(() => {
-    if (!isAuthenticated) {
-      const demoAdmin = {
-        id: "admin-demo-001",
-        email: "admin@wowgift.app",
-        name: "مدير النظام",
-        role: "admin" as const,
-        avatar: "",
-      };
-      setUser(demoAdmin);
-    }
-  }, [isAuthenticated, setUser]);
+  const { isAuthenticated, user } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

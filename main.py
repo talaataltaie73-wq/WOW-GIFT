@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.database import init_db
 from app.routers import (
+    admin_auth,
     auth,
     users,
     merchants,
@@ -50,6 +51,7 @@ app.add_middleware(
 # ── Routers ──────────────────────────────────────────────────────────────
 API_PREFIX = "/api/v1"
 
+app.include_router(admin_auth.router, prefix=API_PREFIX)
 app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(phone.router, prefix=API_PREFIX)
 app.include_router(users.router, prefix=API_PREFIX)

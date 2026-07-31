@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Gift } from "lucide-react";
 import api from "@/lib/api";
-import { mockAdminUser } from "@/lib/mock-data";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@wowgift.app");
+  const [password, setPassword] = useState("admin123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { setAuth } = useAuthStore();
@@ -21,19 +20,30 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const res = await api.post("/auth/login", { email, password });
-      const { access_token, user } = res.data;
+      // Call the real API endpoint
+      const res = await api.post("/auth/admin/login", { 
+        email: email.trim(), 
+        password: password.trim() 
+      });
+      
+      const { token, user } = res.data;
+      
       if (user.role !== "admin") {
         setError("هذه اللوحة مخصصة لمديري المنصة فقط");
         setLoading(false);
         return;
       }
-      setAuth(user, access_token);
+      
+      // Update store (this also saves to localStorage)
+      setAuth(user, token);
+      
+      // Redirect to dashboard
       navigate("/", { replace: true });
-    } catch {
-      const mockToken = "mock_admin_token_" + Date.now();
-      setAuth(mockAdminUser, mockToken);
-      navigate("/", { replace: true });
+    } catch (err: any) {
+      setError(
+        err.response?.data?.detail || 
+        "فشل تسجيل الدخول. تحقق من البيانات المدخلة."
+      );
     } finally {
       setLoading(false);
     }
@@ -57,7 +67,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@wowgift.iq"
+              placeholder="admin@wowgift.app"
               required
               dir="ltr"
             />
@@ -71,8 +81,17 @@ export default function LoginPage() {
               dir="ltr"
             />
             {error && (
-              <p className="text-sm text-danger bg-danger/5 p-3 rounded-xl">{error}</p>
+              <div className="text-sm text-danger bg-danger/5 p-3 rounded-xl border border-danger/10">
+                {error}
+              </div>
             )}
+            
+            <div className="p-3 bg-primary/5 rounded-xl border border-primary/10 text-xs text-text-secondary">
+              <p className="font-medium text-primary mb-2">بيانات الاختبار:</p>
+              <p>البريد: admin@wowgift.app</p>
+              <p>الكلمة: admin123</p>
+            </div>
+            
             <Button type="submit" className="w-full" loading={loading}>
               تسجيل الدخول
             </Button>
