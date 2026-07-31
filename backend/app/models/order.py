@@ -6,7 +6,7 @@ from datetime import date, datetime, time
 from sqlalchemy import Boolean, Date, DateTime, Enum, Float, ForeignKey, Integer, String, Text, Time
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, TimestampMixin, UUIDMixin, _utcnow
+from .base import Base, TimestampMixin, UUIDMixin, _utcnow
 
 
 class OrderStatus(str, enum.Enum):

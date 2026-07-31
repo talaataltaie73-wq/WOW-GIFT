@@ -5,13 +5,13 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import get_current_user, require_admin
-from app.models.order import Order
-from app.models.user import User
-from app.schemas.order import OrderCreate, OrderOut, OrderStatusUpdate
-from app.services.crud import get_by_id
-from app.services.order_service import create_order, update_order_status
+from ..database import get_db
+from ..dependencies import get_current_user, require_admin
+from ..models.order import Order
+from ..models.user import User
+from ..schemas.order import OrderCreate, OrderOut, OrderStatusUpdate
+from ..services.crud import get_by_id
+from ..services.order_service import create_order, update_order_status
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 

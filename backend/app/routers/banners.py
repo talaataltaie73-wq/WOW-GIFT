@@ -4,12 +4,12 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import require_admin
-from app.models.banner import Banner
-from app.models.user import User
-from app.schemas.banner import BannerCreate, BannerOut, BannerUpdate
-from app.services.crud import create_record, get_by_id, update_record
+from ..database import get_db
+from ..dependencies import require_admin
+from ..models.banner import Banner
+from ..models.user import User
+from ..schemas.banner import BannerCreate, BannerOut, BannerUpdate
+from ..services.crud import create_record, get_by_id, update_record
 
 router = APIRouter(prefix="/banners", tags=["banners"])
 

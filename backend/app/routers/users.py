@@ -6,23 +6,23 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.security import verify_password
-from app.database import get_db
-from app.dependencies import get_current_user, require_admin
-from app.models.address import Address
-from app.models.favorite import Favorite
-from app.models.notification import Notification
-from app.models.occasion_reminder import OccasionReminder
-from app.models.phone_verification import PhoneVerification
-from app.models.user import User
-from app.schemas.user import (
+from ..core.security import verify_password
+from ..database import get_db
+from ..dependencies import get_current_user, require_admin
+from ..models.address import Address
+from ..models.favorite import Favorite
+from ..models.notification import Notification
+from ..models.occasion_reminder import OccasionReminder
+from ..models.phone_verification import PhoneVerification
+from ..models.user import User
+from ..schemas.user import (
     AdminUserOut,
     DeleteAccountRequest,
     DeleteAccountResponse,
     UserOut,
     UserUpdate,
 )
-from app.services.user_service import update_user
+from ..services.user_service import update_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 

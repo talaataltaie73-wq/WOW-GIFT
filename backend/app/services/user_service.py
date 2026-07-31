@@ -4,8 +4,8 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.user import User
-from app.schemas.user import UserUpdate
+from ..models.user import User
+from ..schemas.user import UserUpdate
 
 
 async def get_user_by_id(db: AsyncSession, user_id: str) -> User:

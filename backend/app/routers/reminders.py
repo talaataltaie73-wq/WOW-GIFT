@@ -3,12 +3,12 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import get_current_user
-from app.models.occasion_reminder import OccasionReminder
-from app.models.user import User
-from app.schemas.reminder import ReminderCreate, ReminderOut, ReminderUpdate
-from app.services.crud import create_record, delete_record, get_all, get_by_id, update_record
+from ..database import get_db
+from ..dependencies import get_current_user
+from ..models.occasion_reminder import OccasionReminder
+from ..models.user import User
+from ..schemas.reminder import ReminderCreate, ReminderOut, ReminderUpdate
+from ..services.crud import create_record, delete_record, get_all, get_by_id, update_record
 
 router = APIRouter(prefix="/reminders", tags=["reminders"])
 

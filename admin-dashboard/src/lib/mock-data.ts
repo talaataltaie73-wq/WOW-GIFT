@@ -2,6 +2,7 @@ import type {
   User,
   Store,
   Product,
+  GiftBox,
   Order,
   Category,
   Coupon,
@@ -82,6 +83,13 @@ export const mockStores: Store[] = [
     email: "fatima@capitalg.com", status: "active", rating: 4.7, product_count: 67, created_at: "2024-04-15T10:00:00Z",
     documents: storeDocuments, terms_accepted: true, info_accurate: true, privacy_accepted: true,
   },
+  {
+    id: "s7", merchant_id: "u3", merchant_name: "محمد علي", name_ar: "رجال ستايل", name_en: "Men Style",
+    description_ar: "متجر متخصص في هدايا وأكسسوارات الرجال", description_en: "Shop for men gifts and accessories",
+    logo_url: "https://placehold.co/80x80/1F2937/D4AF37?text=Men", cover_url: "", phone: "+9647703333333",
+    email: "menstyle@wowgift.com", status: "active", rating: 4.9, product_count: 18, created_at: "2024-07-10T10:00:00Z",
+    documents: storeDocuments, terms_accepted: true, info_accurate: true, privacy_accepted: true,
+  },
 ];
 
 export const mockCategories: Category[] = [
@@ -92,6 +100,7 @@ export const mockCategories: Category[] = [
   { id: "c5", name_ar: "إكسسوارات", name_en: "Accessories", icon: "⌚", sort_order: 5, is_active: true },
   { id: "c6", name_ar: "تغليف هدايا", name_en: "Gift Wrapping", icon: "🎀", sort_order: 6, is_active: true },
   { id: "c7", name_ar: "ألعاب", name_en: "Toys", icon: "🧸", sort_order: 7, is_active: false },
+  { id: "c8", name_ar: "رجال", name_en: "Men", icon: "🧔", sort_order: 8, is_active: true },
 ];
 
 export const mockProducts: Product[] = [
@@ -99,9 +108,50 @@ export const mockProducts: Product[] = [
   { id: "p2", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "عطر كريد أفينتوس", name_en: "Creed Aventus", description_ar: "عطر كريد أفينتوس الفاخر", description_en: "Luxury Creed Aventus perfume", price: 450000, category_id: "c3", category_name: "عطور", stock: 10, images: ["https://placehold.co/400x400/1a1a2e/D4AF37?text=Perfume"], status: "active", created_at: "2024-06-05T10:00:00Z" },
   { id: "p3", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "طقم مونت بلانك فاخر", name_en: "Mont Blanc Set", description_ar: "طقم مونت بلانك أقلام فاخرة", description_en: "Premium Mont Blanc pen set", price: 320000, category_id: "c1", category_name: "هدايا فاخرة", stock: 5, images: ["https://placehold.co/400x400/2C3E50/FFFFFF?text=MontBlanc"], status: "active", created_at: "2024-06-10T10:00:00Z" },
   { id: "p4", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "هدايا العيد الفاخرة", name_en: "Luxury Eid Gifts", description_ar: "مجموعة هدايا العيد الفاخرة", description_en: "Premium Eid gift collection", price: 150000, category_id: "c1", category_name: "هدايا فاخرة", stock: 30, images: ["https://placehold.co/400x400/D4AF37/111827?text=Eid"], status: "active", created_at: "2024-06-15T10:00:00Z" },
-  { id: "p5", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "ساعة رولكس رجالية", name_en: "Rolex Men Watch", description_ar: "ساعة رولكس رجالية أصلية", description_en: "Original Rolex men's watch", price: 2500000, category_id: "c5", category_name: "إكسسوارات", stock: 3, images: ["https://placehold.co/400x400/0F766E/D4AF37?text=Rolex"], status: "active", created_at: "2024-06-20T10:00:00Z" },
-  { id: "p6", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "شوكولاتة بلجيكية فاخرة", name_en: "Belgian Chocolate", description_ar: "شوكولاتة بلجيكية أصلية", description_en: "Authentic Belgian chocolate", price: 65000, category_id: "c2", category_name: "شوكولاتة", stock: 50, images: ["https://placehold.co/400x400/8B4513/FFFFFF?text=Choco"], status: "active", created_at: "2024-06-25T10:00:00Z" },
-  { id: "p7", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "طقم تغليف ذهبي", name_en: "Gold Wrapping Set", description_ar: "طقم تغليف هدايا ذهبي فاخر", description_en: "Premium gold gift wrapping set", price: 35000, category_id: "c6", category_name: "تغليف هدايا", stock: 0, images: ["https://placehold.co/400x400/D4AF37/FFFFFF?text=Wrap"], status: "inactive", created_at: "2024-07-01T10:00:00Z" },
+  { id: "p5", store_id: "s7", store_name: "رجال ستايل", name_ar: "ساعة رولكس رجالية", name_en: "Rolex Men Watch", description_ar: "ساعة رولكس رجالية أصلية", description_en: "Original Rolex men's watch", price: 2500000, category_id: "c8", category_name: "رجال", stock: 3, images: ["https://placehold.co/400x400/0F766E/D4AF37?text=Rolex"], status: "active", created_at: "2024-06-20T10:00:00Z" },
+  { id: "p6", store_id: "s7", store_name: "رجال ستايل", name_ar: "عطر رجالي فاخر", name_en: "Luxury Men Cologne", description_ar: "عطر رجالي فاخر برائحة جذابة", description_en: "Luxury men's cologne with a bold scent", price: 185000, category_id: "c8", category_name: "رجال", stock: 24, images: ["https://placehold.co/400x400/1F2937/D4AF37?text=Cologne"], status: "active", created_at: "2024-07-05T10:00:00Z" },
+  { id: "p7", store_id: "s7", store_name: "رجال ستايل", name_ar: "مجموعة هدايا رجالية", name_en: "Men's Gift Set", description_ar: "مجموعة مميزة من الهدايا الرجالية للعيد", description_en: "Premium gift set for men", price: 130000, category_id: "c8", category_name: "رجال", stock: 20, images: ["https://placehold.co/400x400/1F2937/FFFFFF?text=MenSet"], status: "active", created_at: "2024-07-07T10:00:00Z" },
+  { id: "p8", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "شوكولاتة بلجيكية فاخرة", name_en: "Belgian Chocolate", description_ar: "شوكولاتة بلجيكية أصلية", description_en: "Authentic Belgian chocolate", price: 65000, category_id: "c2", category_name: "شوكولاتة", stock: 50, images: ["https://placehold.co/400x400/8B4513/FFFFFF?text=Choco"], status: "active", created_at: "2024-06-25T10:00:00Z" },
+  { id: "p13", store_id: "s7", store_name: "رجال ستايل", name_ar: "مجموعة عناية شخصية رجالية", name_en: "Men's Grooming Set", description_ar: "طقم عناية شخصية رجالي فاخر للشعر واللحية", description_en: "Luxury men's grooming set for hair and beard care", price: 175000, category_id: "c8", category_name: "رجال", stock: 18, images: ["https://placehold.co/400x400/1F2937/D4AF37?text=Grooming"], status: "active", created_at: "2024-07-12T10:00:00Z" },
+  { id: "p14", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "سوار عقيق رجالي", name_en: "Men's Agate Bracelet", description_ar: "سوار عقيق فاخر لإطلالة رجالية أنيقة", description_en: "Premium agate bracelet for a refined men's look", price: 99000, category_id: "c5", category_name: "إكسسوارات", stock: 12, images: ["https://placehold.co/400x400/8B4513/FFFFFF?text=Bracelet"], status: "active", created_at: "2024-07-14T10:00:00Z" },
+  { id: "p15", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "صندوق هدايا مخصص", name_en: "Custom Gift Box", description_ar: "صندوق هدايا مخصص مع اختيارات متنوعة للهدايا", description_en: "Custom gift box with curated items for any occasion", price: 125000, category_id: "c1", category_name: "هدايا فاخرة", stock: 10, images: ["https://placehold.co/400x400/D4AF37/111827?text=CustomBox"], status: "active", created_at: "2024-07-15T10:00:00Z" },
+  { id: "p11", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "طقم تغليف ذهبي", name_en: "Gold Wrapping Set", description_ar: "طقم تغليف هدايا ذهبي فاخر", description_en: "Premium gold gift wrapping set", price: 35000, category_id: "c6", category_name: "تغليف هدايا", stock: 0, images: ["https://placehold.co/400x400/D4AF37/FFFFFF?text=Wrap"], status: "inactive", created_at: "2024-07-01T10:00:00Z" },
+  { id: "p12", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "صندوق المفاجآت الخاصة", name_en: "Special Surprise Box", description_ar: "مجموعة هدايا مفاجآت فاخرة مع تغليف أنيق", description_en: "Luxury surprise gift box with elegant packaging", price: 95000, category_id: "c1", category_name: "هدايا فاخرة", stock: 15, images: ["https://placehold.co/400x400/0F766E/FFFFFF?text=Surprise"], status: "active", created_at: "2024-07-05T10:00:00Z" },
+  { id: "p9", store_id: "s3", store_name: "تفاصيل فاخرة", name_ar: "باقة شوكولاتة وورد", name_en: "Chocolate & Rose Bundle", description_ar: "مجموعة من الشوكولاتة الفاخرة والورود الرومانسية", description_en: "Luxury chocolate and rose gift bundle", price: 98000, category_id: "c2", category_name: "شوكولاتة", stock: 22, images: ["https://placehold.co/400x400/DC143C/FFFFFF?text=Bundle"], status: "active", created_at: "2024-07-07T10:00:00Z" },
+  { id: "p10", store_id: "s6", store_name: "هدايا العاصمة", name_ar: "شمعة عطرية معطرة", name_en: "Aromatic Candle", description_ar: "شمعة عطرية فاخرة لتجربة عطرية مميزة", description_en: "Premium scented candle for a luxury aroma experience", price: 18000, category_id: "c6", category_name: "تغليف هدايا", stock: 40, images: ["https://placehold.co/400x400/D4AF37/111827?text=Candle"], status: "active", created_at: "2024-07-08T10:00:00Z" },
+];
+
+export const mockGiftBoxes: GiftBox[] = [
+  {
+    id: "g1",
+    store_id: "s7",
+    store_name: "رجال ستايل",
+    name_ar: "صندوق الرجول الفاخر",
+    name_en: "Men's Luxury Box",
+    description_ar: "صندوق متكامل لهدايا الرجال المختارة بعناية",
+    description_en: "A premium box packed with curated men's gifts",
+    price: 220000,
+    currency: "IQD",
+    image_url: "https://placehold.co/400x400/1F2937/D4AF37?text=MenBox",
+    product_count: 5,
+    status: "active",
+    created_at: "2024-07-15T10:00:00Z",
+  },
+  {
+    id: "g2",
+    store_id: "s6",
+    store_name: "هدايا العاصمة",
+    name_ar: "صندوق المفاجآت العائلية",
+    name_en: "Family Surprise Box",
+    description_ar: "مجموعة هدايا عائلية متنوعة من متاجرنا المميزة",
+    description_en: "A family gift box with assorted premium items",
+    price: 185000,
+    currency: "IQD",
+    image_url: "https://placehold.co/400x400/D4AF37/111827?text=Family",
+    product_count: 4,
+    status: "active",
+    created_at: "2024-07-12T10:00:00Z",
+  },
 ];
 
 export const mockOrders: Order[] = [
@@ -171,9 +221,26 @@ export const mockCoupons: Coupon[] = [
 ];
 
 export const mockBanners: Banner[] = [
-  { id: "b1", title: "عروض عيد الأضحى", image_url: "https://placehold.co/1200x400/0F766E/FFFFFF?text=Eid+Offers", link_target: "/products?occasion=eid", start_date: "2024-06-01T00:00:00Z", end_date: "2024-06-30T23:59:59Z", is_active: true, created_at: "2024-05-25T10:00:00Z" },
-  { id: "b2", title: "هدايا التخرج", image_url: "https://placehold.co/1200x400/D4AF37/111827?text=Graduation", link_target: "/products?occasion=graduation", start_date: "2024-05-01T00:00:00Z", end_date: "2024-07-31T23:59:59Z", is_active: true, created_at: "2024-04-20T10:00:00Z" },
-  { id: "b3", title: "خصم 20% على الورود", image_url: "https://placehold.co/1200x400/DC143C/FFFFFF?text=Flowers+20%25", link_target: "/products?category=flowers", start_date: "2024-07-01T00:00:00Z", end_date: "2024-07-15T23:59:59Z", is_active: false, created_at: "2024-06-28T10:00:00Z" },
+  {
+    id: "b1",
+    title: "عرض خاص لعيد الأضحى",
+    image_url: "https://placehold.co/1200x400/D4AF37/111827?text=Eid+Banner",
+    link_target: "/products?occasion=eid",
+    start_date: "2024-07-01T00:00:00Z",
+    end_date: "2024-07-31T23:59:59Z",
+    is_active: true,
+    created_at: "2024-06-25T10:00:00Z",
+  },
+  {
+    id: "b2",
+    title: "هدايا فاخرة بأسعار مخفضة",
+    image_url: "https://placehold.co/1200x400/0F766E/FFFFFF?text=Luxury+Sale",
+    link_target: "/products?category=Luxury Gifts",
+    start_date: "2024-07-05T00:00:00Z",
+    end_date: "2024-08-15T23:59:59Z",
+    is_active: true,
+    created_at: "2024-06-30T10:00:00Z",
+  },
 ];
 
 export const mockNotifications: Notification[] = [

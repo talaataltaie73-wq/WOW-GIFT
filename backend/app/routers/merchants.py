@@ -3,11 +3,11 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import get_current_user, require_admin
-from app.models.user import User
-from app.schemas.merchant import MerchantCreate, MerchantEarningsOut, MerchantOut, MerchantUpdate
-from app.services.merchant_service import (
+from ..database import get_db
+from ..dependencies import get_current_user, require_admin
+from ..models.user import User
+from ..schemas.merchant import MerchantCreate, MerchantEarningsOut, MerchantOut, MerchantUpdate
+from ..services.merchant_service import (
     create_merchant,
     get_merchant_by_id,
     get_merchant_by_user,

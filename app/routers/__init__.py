@@ -27,6 +27,7 @@ def _make_router(name: str) -> SimpleNamespace:
     router = APIRouter(tags=[name])
 
     @router.get(f"/{name}")
+    @router.get(f"/{name}/")
     async def placeholder() -> dict[str, str]:
         return {"module": name, "status": "ready"}
 

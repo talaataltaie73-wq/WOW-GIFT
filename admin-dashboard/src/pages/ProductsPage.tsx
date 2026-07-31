@@ -1,20 +1,25 @@
-import { useState } from "react";
-import { useProducts, useCategories, useStores } from "@/hooks/useApi";
+import { useMemo, useState } from "react";
+import { useProducts, useCategories, useStores, useUpdateProduct } from "@/hooks/useApi";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
-import { Search, Eye, EyeOff } from "lucide-react";
+import { Search, Eye, EyeOff, Edit3 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import type { Product } from "@/types";
 
 export default function ProductsPage() {
   const { data: products } = useProducts();
   const { data: categories } = useCategories();
   const { data: stores } = useStores();
+  const updateProduct = useUpdateProduct();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [storeFilter, setStoreFilter] = useState("all");
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [formValues, setFormValues] = useState<{ name_ar: string; name_en: string; price: number; status: Product["status"] }>({ name_ar: "", name_en: "", price: 0, status: "active" });
 
   const filtered = (products || []).filter((p) => {
     const matchSearch = p.name_ar.includes(search) || p.name_en.toLowerCase().includes(search.toLowerCase());
@@ -22,6 +27,22 @@ export default function ProductsPage() {
     const matchStore = storeFilter === "all" || p.store_id === storeFilter;
     return matchSearch && matchCategory && matchStore;
   });
+
+  const currentStores = useMemo(
+    () => Object.fromEntries((stores || []).map((store) => [store.id, store.name_ar])),
+    [stores]
+  );
+
+  const openEditDialog = (product: Product) => {
+    setEditingProduct(product);
+    setFormValues({ name_ar: product.name_ar, name_en: product.name_en || "", price: product.price, status: product.status });
+  };
+
+  const handleSave = async () => {
+    if (!editingProduct) return;
+    await updateProduct.mutateAsync({ id: editingProduct.id, data: { name_ar: formValues.name_ar, name_en: formValues.name_en, price: formValues.price, status: formValues.status } });
+    setEditingProduct(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -90,6 +111,9 @@ export default function ProductsPage() {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
+                    <Button size="sm" variant="ghost" title="تعديل المنتج" onClick={() => openEditDialog(product)}>
+                      <Edit3 className="h-4 w-4" />
+                    </Button>
                     <Button size="sm" variant="ghost" title={product.status === "active" ? "إخفاء" : "إظهار"}>
                       {product.status === "active" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
@@ -100,6 +124,58 @@ export default function ProductsPage() {
           </TableBody>
         </Table>
       </Card>
+
+      <Dialog open={!!editingProduct} onClose={() => setEditingProduct(null)}>
+        <DialogHeader>
+          <DialogTitle>تعديل المنتج</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm font-medium text-text">اسم المنتج (عربي)</label>
+            <Input
+              value={formValues.name_ar}
+              onChange={(e) => setFormValues({ ...formValues, name_ar: e.target.value })}
+              className="mt-2"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-text">Product Name (English)</label>
+            <Input
+              value={formValues.name_en}
+              onChange={(e) => setFormValues({ ...formValues, name_en: e.target.value })}
+              className="mt-2"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-text">السعر</label>
+            <Input
+              type="number"
+              value={formValues.price}
+              onChange={(e) => setFormValues({ ...formValues, price: Number(e.target.value) })}
+              className="mt-2"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-text">الحالة</label>
+            <select
+              className="mt-2 w-full rounded-xl border border-border px-4 py-3 text-sm"
+              value={formValues.status}
+              onChange={(e) => setFormValues({ ...formValues, status: e.target.value as Product["status"] })}
+            >
+              <option value="active">نشط</option>
+              <option value="inactive">مخفي</option>
+            </select>
+          </div>
+          <div className="flex justify-end gap-3 pt-3">
+            <Button variant="secondary" onClick={() => setEditingProduct(null)}>
+              إلغاء
+            </Button>
+            <Button onClick={handleSave} loading={updateProduct.isPending}>
+              حفظ التعديلات
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

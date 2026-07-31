@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import get_current_user
-from app.models.user import User
-from app.schemas.user import OtpRequestBody, OtpVerifyBody
-from app.services.otp_service import (
+from ..database import get_db
+from ..dependencies import get_current_user
+from ..models.user import User
+from ..schemas.user import OtpRequestBody, OtpVerifyBody
+from ..services.otp_service import (
     OtpRateLimitError,
     OtpVerificationError,
     request_otp,

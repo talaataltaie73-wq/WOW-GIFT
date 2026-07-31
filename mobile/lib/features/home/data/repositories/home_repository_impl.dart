@@ -95,7 +95,7 @@ class HomeRepositoryImpl implements HomeRepository {
 
   // ─── Mock Data ───────────────────────────────────────────────────────
 
-  static final List<CategoryEntity> _mockCategories = const [
+  static const List<CategoryEntity> _mockCategories = [
     CategoryEntity(id: '1', name: 'عطور', icon: '🧴', productCount: 45),
     CategoryEntity(id: '2', name: 'ورود', icon: '🌹', productCount: 32),
     CategoryEntity(id: '3', name: 'شوكولاتة', icon: '🍫', productCount: 28),
@@ -107,7 +107,8 @@ class HomeRepositoryImpl implements HomeRepository {
     CategoryEntity(id: '9', name: 'كتب', icon: '📚', productCount: 35),
     CategoryEntity(id: '10', name: 'ديكور', icon: '🏠', productCount: 18),
     CategoryEntity(id: '11', name: 'مجوهرات', icon: '💎', productCount: 29),
-    CategoryEntity(id: '12', name: 'بطاقات هدايا', icon: '🎁', productCount: 15),
+    CategoryEntity(
+        id: '12', name: 'بطاقات هدايا', icon: '🎁', productCount: 15),
   ];
 
   static final List<ProductEntity> _mockBestDeals = [

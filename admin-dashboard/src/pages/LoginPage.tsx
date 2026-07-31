@@ -38,7 +38,7 @@ export default function LoginPage() {
       setAuth(user, token);
       
       // Redirect to dashboard
-      navigate("/", { replace: true });
+      navigate("/admin", { replace: true });
     } catch (err: any) {
       setError(
         err.response?.data?.detail || 

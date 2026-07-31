@@ -4,12 +4,12 @@ from fastapi import HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import settings
-from app.models.merchant import Merchant
-from app.models.order import Order, OrderItem, OrderStatus
-from app.models.product import Product
-from app.models.store import Store
-from app.schemas.merchant import MerchantCreate, MerchantEarningsOut, MerchantUpdate
+from ..core.config import settings
+from ..models.merchant import Merchant
+from ..models.order import Order, OrderItem, OrderStatus
+from ..models.product import Product
+from ..models.store import Store
+from ..schemas.merchant import MerchantCreate, MerchantEarningsOut, MerchantUpdate
 
 
 async def create_merchant(db: AsyncSession, user_id: str, data: MerchantCreate) -> Merchant:

@@ -1,19 +1,19 @@
-from app.models.base import Base
-from app.models.user import User
-from app.models.merchant import Merchant
-from app.models.store import Store
-from app.models.category import Category
-from app.models.product import Product
-from app.models.gift_box import GiftBox, GiftBoxItem
-from app.models.order import Order, OrderItem, OrderStatusHistory, OrderStatus, PaymentMethod
-from app.models.address import Address
-from app.models.coupon import Coupon
-from app.models.favorite import Favorite
-from app.models.notification import Notification
-from app.models.occasion_reminder import OccasionReminder
-from app.models.merchant_payout import MerchantPayout
-from app.models.phone_verification import PhoneVerification
-from app.models.banner import Banner
+from .base import Base
+from .user import User
+from .merchant import Merchant
+from .store import Store
+from .category import Category
+from .product import Product
+from .gift_box import GiftBox, GiftBoxItem
+from .order import Order, OrderItem, OrderStatusHistory, OrderStatus, PaymentMethod
+from .address import Address
+from .coupon import Coupon
+from .favorite import Favorite
+from .notification import Notification
+from .occasion_reminder import OccasionReminder
+from .merchant_payout import MerchantPayout
+from .phone_verification import PhoneVerification
+from .banner import Banner
 
 __all__ = [
     "Base",

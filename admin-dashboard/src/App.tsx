@@ -15,6 +15,7 @@ import AdsPage from "@/pages/AdsPage";
 import CouponsPage from "@/pages/CouponsPage";
 import ReportsPage from "@/pages/ReportsPage";
 import NotificationsPage from "@/pages/NotificationsPage";
+import PublicProductsPage from "@/pages/PublicProductsPage";
 
 export default function App() {
   const { loadFromStorage, isAuthenticated } = useAuthStore();
@@ -25,28 +26,30 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<PublicProductsPage />} />
       <Route
         path="/login"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
+        element={isAuthenticated ? <Navigate to="/admin" replace /> : <LoginPage />}
       />
       <Route
+        path="/admin"
         element={
           <AuthGuard>
             <DashboardLayout />
           </AuthGuard>
         }
       >
-        <Route path="/" element={<OverviewPage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/stores" element={<StoresPage />} />
-        <Route path="/store-approvals" element={<StoreApprovalsPage />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/ads" element={<AdsPage />} />
-        <Route path="/coupons" element={<CouponsPage />} />
-        <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="" element={<OverviewPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="stores" element={<StoresPage />} />
+        <Route path="store-approvals" element={<StoreApprovalsPage />} />
+        <Route path="products" element={<ProductsPage />} />
+        <Route path="orders" element={<OrdersPage />} />
+        <Route path="categories" element={<CategoriesPage />} />
+        <Route path="ads" element={<AdsPage />} />
+        <Route path="coupons" element={<CouponsPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -54,6 +54,22 @@ export interface Product {
   created_at: string;
 }
 
+export interface GiftBox {
+  id: string;
+  store_id: string;
+  store_name?: string;
+  name_ar: string;
+  name_en: string;
+  description_ar: string;
+  description_en: string;
+  price: number;
+  currency: string;
+  image_url: string;
+  product_count: number;
+  status: "active" | "inactive";
+  created_at: string;
+}
+
 export interface Category {
   id: string;
   name_ar: string;

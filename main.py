@@ -3,14 +3,15 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.core.config import settings
-from app.database import init_db
-from app.routers import (
-    admin_auth,
+from backend.app.core.config import settings
+from backend.app.database import init_db
+from backend.app.routers import (
     auth,
     users,
     merchants,
@@ -53,7 +54,6 @@ app.add_middleware(
 # ── Routers ──────────────────────────────────────────────────────────────
 API_PREFIX = "/api/v1"
 
-app.include_router(admin_auth.router, prefix=API_PREFIX)
 app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(phone.router, prefix=API_PREFIX)
 app.include_router(users.router, prefix=API_PREFIX)
@@ -78,6 +78,18 @@ async def health():
 
 # ── Serve Static Files (Admin Dashboard) ─────────────────────────────────
 # Serve the React build from admin-dashboard/dist
+# Static assets are served explicitly, and all frontend routes return index.html.
 dist_path = Path(__file__).parent / "admin-dashboard" / "dist"
 if dist_path.exists():
-    app.mount("/", StaticFiles(directory=str(dist_path), html=True), name="static")
+    app.mount("/assets", StaticFiles(directory=str(dist_path / "assets")), name="assets")
+    app.mount("/favicon.svg", StaticFiles(directory=str(dist_path)), name="favicon")
+
+    @app.get("/")
+    async def spa_index():
+        return FileResponse(dist_path / "index.html")
+
+    @app.get("/{full_path:path}")
+    async def spa_fallback(full_path: str):
+        if full_path.startswith("api/") or full_path == "health" or full_path.startswith("assets/") or full_path == "favicon.svg":
+            raise StarletteHTTPException(status_code=404)
+        return FileResponse(dist_path / "index.html")

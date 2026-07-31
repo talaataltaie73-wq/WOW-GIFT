@@ -4,11 +4,11 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.order import Order, OrderItem, OrderStatusHistory, OrderStatus
-from app.models.product import Product
-from app.models.gift_box import GiftBox
-from app.models.coupon import Coupon
-from app.schemas.order import OrderCreate
+from ..models.order import Order, OrderItem, OrderStatusHistory, OrderStatus
+from ..models.product import Product
+from ..models.gift_box import GiftBox
+from ..models.coupon import Coupon
+from ..schemas.order import OrderCreate
 
 
 VALID_TRANSITIONS: dict[str, list[str]] = {

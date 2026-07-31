@@ -3,12 +3,12 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import get_current_user
-from app.models.notification import Notification
-from app.models.user import User
-from app.schemas.notification import NotificationOut
-from app.services.crud import get_all, get_by_id, update_record
+from ..database import get_db
+from ..dependencies import get_current_user
+from ..models.notification import Notification
+from ..models.user import User
+from ..schemas.notification import NotificationOut
+from ..services.crud import get_all, get_by_id, update_record
 
 router = APIRouter(prefix="/notifications", tags=["notifications"])
 

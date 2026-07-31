@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 
-from app.services.otp.base import OtpProvider
+from .base import OtpProvider
 
 logger = logging.getLogger(__name__)
 

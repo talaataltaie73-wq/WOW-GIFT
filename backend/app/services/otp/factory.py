@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from app.core.config import settings
-from app.services.otp.base import OtpProvider
+from ...core.config import settings
+from .base import OtpProvider
 
 
 def get_otp_provider() -> OtpProvider:
@@ -12,12 +12,12 @@ def get_otp_provider() -> OtpProvider:
     provider_name = settings.OTP_PROVIDER.lower()
 
     if provider_name == "mock":
-        from app.services.otp.mock_provider import MockOtpProvider
+        from .mock_provider import MockOtpProvider
 
         return MockOtpProvider()
 
     if provider_name == "twilio":
-        from app.services.otp.twilio_provider import TwilioOtpProvider
+        from .twilio_provider import TwilioOtpProvider
 
         return TwilioOtpProvider()
 

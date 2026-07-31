@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from app.core.config import settings
-from app.services.otp.base import OtpProvider
+from ...core.config import settings
+from .base import OtpProvider
 
 
 class TwilioOtpProvider(OtpProvider):

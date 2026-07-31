@@ -3,12 +3,12 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import require_admin
-from app.models.coupon import Coupon
-from app.models.user import User
-from app.schemas.coupon import CouponCreate, CouponOut, CouponUpdate
-from app.services.crud import create_record, get_all, get_by_id, update_record
+from ..database import get_db
+from ..dependencies import require_admin
+from ..models.coupon import Coupon
+from ..models.user import User
+from ..schemas.coupon import CouponCreate, CouponOut, CouponUpdate
+from ..services.crud import create_record, get_all, get_by_id, update_record
 
 router = APIRouter(prefix="/coupons", tags=["coupons"])
 

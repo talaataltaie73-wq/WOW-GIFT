@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.dependencies import require_admin
-from app.models.store import Store
-from app.models.user import User
-from app.schemas.store import StoreCreate, StoreOut, StoreUpdate
-from app.services.crud import create_record, get_all, get_by_id, update_record
-from app.services.merchant_service import get_merchant_by_user
+from ..database import get_db
+from ..dependencies import require_admin
+from ..models.store import Store
+from ..models.user import User
+from ..schemas.store import StoreCreate, StoreOut, StoreUpdate
+from ..services.crud import create_record, get_all, get_by_id, update_record
+from ..services.merchant_service import get_merchant_by_user
 
 router = APIRouter(prefix="/stores", tags=["stores"])
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import Boolean, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, TimestampMixin, UUIDMixin
+from .base import Base, TimestampMixin, UUIDMixin
 
 
 class Category(UUIDMixin, TimestampMixin, Base):

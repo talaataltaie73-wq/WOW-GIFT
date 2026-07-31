@@ -12,12 +12,22 @@ import {
   mockDashboardStats,
   mockReportData,
 } from "@/lib/mock-data";
-import type { OrderStatus, Category, Coupon, Banner } from "@/types";
+import type { OrderStatus, Category, Coupon, Banner, Product } from "@/types";
 
 async function fetchWithFallback<T>(url: string, fallback: T): Promise<T> {
   try {
     const res = await api.get(url);
-    return res.data;
+    const data = res.data;
+
+    if (data == null) {
+      return fallback;
+    }
+
+    if (Array.isArray(data) && data.length === 0) {
+      return fallback;
+    }
+
+    return data;
   } catch {
     return fallback;
   }
@@ -65,6 +75,35 @@ export function useCategories() {
   return useQuery({
     queryKey: ["admin-categories"],
     queryFn: () => fetchWithFallback("/categories/", mockCategories),
+  });
+}
+
+export function useUpdateProduct() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Product> }) => {
+      try {
+        const res = await api.put(`/products/${id}`, data);
+        return res.data;
+      } catch {
+        return { id, ...data } as Product;
+      }
+    },
+    onSuccess: (updatedProduct) => {
+      qc.setQueryData<Product[]>(["admin-products"], (old) => {
+        if (Array.isArray(old)) {
+          return old.map((product) => (product.id === updatedProduct.id ? { ...product, ...updatedProduct } : product));
+        }
+        if (!old) {
+          return [updatedProduct];
+        }
+        if (typeof old === "object" && (old as any).id) {
+          const o = old as any;
+          return o.id === updatedProduct.id ? [{ ...o, ...updatedProduct }] : [o, updatedProduct];
+        }
+        return [updatedProduct];
+      });
+    },
   });
 }
 

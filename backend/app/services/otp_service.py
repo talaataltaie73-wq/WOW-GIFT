@@ -8,12 +8,12 @@ from fastapi import HTTPException
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import settings
-from app.core.security import hash_password, verify_password
-from app.models.phone_verification import PhoneVerification
-from app.models.user import User
-from app.services.otp.factory import get_otp_provider
-from app.services.otp.mock_provider import MockOtpProvider
+from ..core.config import settings
+from ..core.security import hash_password, verify_password
+from ..models.phone_verification import PhoneVerification
+from ..models.user import User
+from ..services.otp.factory import get_otp_provider
+from ..services.otp.mock_provider import MockOtpProvider
 
 
 class OtpRateLimitError(Exception):

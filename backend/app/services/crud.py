@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.base import Base
+from ..models.base import Base
 
 
 async def get_all(db: AsyncSession, model: Type[Base], **filters: Any) -> Sequence[Base]:

@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import Base, TimestampMixin, UUIDMixin
+from .base import Base, TimestampMixin, UUIDMixin
 
 
 class Favorite(UUIDMixin, TimestampMixin, Base):

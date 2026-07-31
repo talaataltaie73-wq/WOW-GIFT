@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { useAuthStore } from "@/store/auth";
 import { Bell, ChevronDown, Menu } from "lucide-react";
@@ -7,6 +7,7 @@ import { Bell, ChevronDown, Menu } from "lucide-react";
 export function DashboardLayout() {
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-surface">
@@ -26,7 +27,7 @@ export function DashboardLayout() {
           <ChevronDown className="h-4 w-4 text-text-secondary hidden sm:inline" />
         </div>
         <div className="flex items-center gap-4">
-          <button className="relative p-2 rounded-xl hover:bg-surface transition-colors" onClick={() => window.location.href = "/notifications"}>
+          <button className="relative p-2 rounded-xl hover:bg-surface transition-colors" onClick={() => navigate("/notifications") }>
             <Bell className="h-5 w-5 text-text-secondary" />
             <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-danger text-white text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
           </button>
